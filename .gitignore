@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+*.pyo
+*.pyd
+.python-version
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Data - Regenerated files
+data/chunks/
+data/chunks/*.json
+
+# Old V1/V2 files (being removed)
+src/pdf_processor.py
+src/pdf_processor_v2.py
+src/pipeline.py
+src/pipeline_v2.py
+src/fix_indentation.py
+
+# Temporary files
+*.log
+*.tmp
+tmp/
+temp/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Docker
+# Note: .dockerignore should be committed to repo
+
+# Session/Planning documents (not for distribution)
+SESSION_HANDOFF.md
+VALIDATION_CHECKLIST.md
+NEXT_SESSION_START_HERE.md
+PHASE1_COMPLETE.md
+KNOWN_ISSUES.md
+QUICKSTART.md
+CLARION_KNOWLEDGE_BASE_PLAN.md
+CDevClarionAINEW_SESSION_PROMPT.md
+NEW_SESSION_PROMPT.md
+
+# MCP config (user-specific)
+mcp_config.json
+.claude/
+
+# Source PDFs (copyrighted, too large for distribution)
+Documents/
+*.pdf
+
+# Qdrant snapshot (distribute via GitHub Release, not in repo)
+qdrant-snapshot.tar.gz
+
+# Test files
+tests/__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

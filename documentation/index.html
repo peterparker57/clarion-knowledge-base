@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarion Knowledge Base - MCP Server Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        nav {
+            background: #f8f9fa;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+
+        .code-header {
+            background: #1e1e1e;
+            color: #888;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .code-block {
+            margin: 1rem 0;
+        }
+
+        .code-block pre {
+            margin-top: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: #e7f3ff;
+            border-color: #2196F3;
+            color: #0d47a1;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .step h4 {
+            color: #764ba2;
+            margin-top: 0;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: #aaa;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #28a745;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Clarion Knowledge Base</h1>
+            <p>Semantic Search MCP Server for Clarion Documentation</p>
+            <span class="badge">Version 1.0</span>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#quick-start">Quick Start</a></li>
+                <li><a href="#supported-clients">Supported Clients</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#configuration">Configuration</a></li>
+                <li><a href="#usage">Usage</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#technical">Technical Details</a></li>
+            </ul>
+        </nav>
+
+        <div class="content">
+            <section id="overview">
+                <h2>📖 Overview</h2>
+                <p>The <strong>Clarion Knowledge Base</strong> is a Model Context Protocol (MCP) server that provides intelligent semantic search across all Clarion programming language documentation. It enables Claude Code (and other MCP-compatible clients) to instantly access and retrieve relevant information from 21 comprehensive Clarion PDF documents.</p>
+
+                <div class="alert alert-info">
+                    <strong>What is MCP?</strong> Model Context Protocol is a standardized way to connect AI assistants like Claude to external data sources and tools. This MCP server makes Clarion documentation searchable and accessible directly from your AI coding assistant.
+                </div>
+
+                <h3>What Does It Do?</h3>
+                <ul>
+                    <li>🔍 <strong>Semantic Search:</strong> Natural language queries across all Clarion documentation</li>
+                    <li>📚 <strong>Comprehensive Coverage:</strong> Indexes 21 Clarion PDFs (~30,000 knowledge chunks)</li>
+                    <li>⚡ <strong>Fast Results:</strong> Sub-1-second search response time</li>
+                    <li>🎯 <strong>Relevant Results:</strong> AI-powered similarity matching (0.6-0.8 average relevance)</li>
+                    <li>🏷️ <strong>Filtered Search:</strong> Search by document type (language, libraries, templates, etc.)</li>
+                    <li>💻 <strong>Code Preservation:</strong> Maintains proper Clarion code indentation and formatting</li>
+                </ul>
+            </section>
+
+            <section id="features">
+                <h2>✨ Features</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🤖 AI-Powered Search</h4>
+                        <p>Uses advanced sentence-transformers model (all-mpnet-base-v2) for semantic understanding of queries.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📊 Vector Database</h4>
+                        <p>Qdrant vector store provides efficient similarity search across 30,000+ documentation chunks.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎨 Proper Formatting</h4>
+                        <p>Preserves Clarion code indentation and structure for accurate, compile-ready examples.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔄 Global Access</h4>
+                        <p>Works from any directory in Claude Code - globally accessible documentation.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📑 Document Types</h4>
+                        <p>Filter by: Core Language, Libraries, IDE, Templates, Database Drivers, and more.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⚙️ Customizable</h4>
+                        <p>Adjust result count, similarity threshold, and document type filters per query.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quick-start">
+                <h2>🚀 Quick Start</h2>
+                <p>Get up and running with the Clarion Knowledge Base in 3 simple steps:</p>
+
+                <div class="step">
+                    <h4>Step 1: Clone Repository</h4>
+                    <div class="code-block">
+                        <div class="code-header">Command</div>
+                        <pre><code>git clone https://github.com/peterparker57/clarion-knowledge-base
+cd clarion-knowledge-base</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>Step 2: Run Installer</h4>
+                    <div class="code-block">
+                        <div class="code-header">Windows</div>
+                        <pre><code>install.bat</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">macOS/Linux</div>
+                        <pre><code>./install.sh</code></pre>
+                    </div>
+                    <p>The installer will automatically:</p>
+                    <ul>
+                        <li>Download and start Docker containers</li>
+                        <li>Import the pre-built vector database</li>
+                        <li>Configure Claude Code or Desktop (your choice)</li>
+                        <li>Verify the installation</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>Step 3: Restart Claude</h4>
+                    <p>Restart Claude Code (CLI) or Claude Desktop (GUI application) to load the new MCP server.</p>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>That's it!</strong> The entire installation process takes approximately 5 minutes. No manual Python setup, no PDF processing required.
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>What You Need:</strong> Just Docker installed and running. The installer handles everything else automatically.
+                </div>
+            </section>
+
+            <section id="supported-clients">
+                <h2>🖥️ Supported Clients</h2>
+                <p>The Clarion Knowledge Base MCP server works with both Claude clients using an identical Docker-based configuration:</p>
+
+                <h3>Client Comparison</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Claude Code</th>
+                            <th>Claude Desktop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Type</strong></td>
+                            <td>Command-line interface (CLI)</td>
+                            <td>Desktop application (GUI)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Developers, terminal workflow</td>
+                            <td>General users, visual interface</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Configuration</strong></td>
+                            <td><code>~/.claude.json</code></td>
+                            <td>OS-specific (see below)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MCP Setup</strong></td>
+                            <td>Identical Docker command</td>
+                            <td>Identical Docker command</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Search Speed</strong></td>
+                            <td>Sub-1-second</td>
+                            <td>Sub-1-second</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Works Globally</strong></td>
+                            <td>Yes, from any directory</td>
+                            <td>Yes, always available</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Claude Desktop Configuration Locations</h3>
+                <p>The configuration file location varies by operating system:</p>
+
+                <h4>Windows</h4>
+                <div class="code-block">
+                    <div class="code-header">Config Path</div>
+                    <pre><code>%APPDATA%\Claude\claude_desktop_config.json</code></pre>
+                </div>
+                <p>Typically: <code>C:\Users\YourUsername\AppData\Roaming\Claude\claude_desktop_config.json</code></p>
+
+                <h4>macOS</h4>
+                <div class="code-block">
+                    <div class="code-header">Config Path</div>
+                    <pre><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></pre>
+                </div>
+                <p>Typically: <code>/Users/YourUsername/Library/Application Support/Claude/claude_desktop_config.json</code></p>
+
+                <h4>Linux</h4>
+                <div class="code-block">
+                    <div class="code-header">Config Path</div>
+                    <pre><code>~/.config/Claude/claude_desktop_config.json</code></pre>
+                </div>
+                <p>Typically: <code>/home/YourUsername/.config/Claude/claude_desktop_config.json</code></p>
+
+                <div class="alert alert-info">
+                    <strong>Note:</strong> The installation script automatically detects your OS and configures the correct path for you.
+                </div>
+            </section>
+
+            <section id="installation">
+                <h2>📦 Installation</h2>
+
+                <div class="alert alert-info">
+                    <strong>New in v1.0:</strong> Docker-based installation with automated setup script. No manual Python configuration or PDF processing required!
+                </div>
+
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li><strong>Docker Desktop</strong> - Installed and running (Windows/Mac/Linux)</li>
+                    <li><strong>Claude Client</strong> - Claude Code (CLI) or Claude Desktop (GUI)</li>
+                    <li><strong>Disk Space</strong> - Approximately 1GB for Docker images and vector database</li>
+                    <li><strong>Internet Connection</strong> - For initial download only</li>
+                </ul>
+
+                <div class="alert alert-warning">
+                    <strong>Important:</strong> Make sure Docker is running before starting the installation.
+                </div>
+
+                <h3>Automated Installation (Recommended)</h3>
+                <p>The automated installer handles all setup steps for you:</p>
+
+                <div class="step">
+                    <h4>Step 1: Clone Repository</h4>
+                    <div class="code-block">
+                        <div class="code-header">Git Command</div>
+                        <pre><code>git clone https://github.com/peterparker57/clarion-knowledge-base
+cd clarion-knowledge-base</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>Step 2: Run Installer</h4>
+                    <div class="code-block">
+                        <div class="code-header">Windows (PowerShell or CMD)</div>
+                        <pre><code>install.bat</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">macOS/Linux</div>
+                        <pre><code>chmod +x install.sh
+./install.sh</code></pre>
+                    </div>
+                    <p>The installer will:</p>
+                    <ul>
+                        <li>Ask which Claude client you want to configure (Code, Desktop, or Both)</li>
+                        <li>Detect your operating system and configuration paths</li>
+                        <li>Download and start Docker containers (Qdrant + MCP server)</li>
+                        <li>Import the pre-built vector database snapshot</li>
+                        <li>Configure the appropriate Claude client(s)</li>
+                        <li>Verify the installation and test the MCP connection</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>Step 3: Restart Claude</h4>
+                    <p>Restart your Claude client to load the new MCP server:</p>
+                    <ul>
+                        <li><strong>Claude Code:</strong> Exit and restart the CLI</li>
+                        <li><strong>Claude Desktop:</strong> Quit and relaunch the application</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ Installation Complete!</strong> You're now ready to search Clarion documentation. Try asking Claude: "Search Clarion docs for QUEUE examples"
+                </div>
+
+                <h3>Manual Installation (Advanced)</h3>
+                <p>If you prefer to set up manually or the automated installer doesn't work, follow these steps:</p>
+
+                <div class="step">
+                    <h4>1. Clone and Navigate</h4>
+                    <div class="code-block">
+                        <div class="code-header">Command</div>
+                        <pre><code>git clone https://github.com/peterparker57/clarion-knowledge-base
+cd clarion-knowledge-base</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>2. Start Docker Services</h4>
+                    <div class="code-block">
+                        <div class="code-header">Docker Compose</div>
+                        <pre><code>docker-compose up -d</code></pre>
+                    </div>
+                    <p>This starts both the Qdrant vector database and MCP server containers.</p>
+                </div>
+
+                <div class="step">
+                    <h4>3. Import Vector Database</h4>
+                    <p>Download the snapshot from GitHub Releases and import:</p>
+                    <div class="code-block">
+                        <div class="code-header">Import Snapshot</div>
+                        <pre><code>python scripts/import_snapshot.py qdrant-snapshot.tar.gz</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>4. Verify Services</h4>
+                    <div class="code-block">
+                        <div class="code-header">Check Status</div>
+                        <pre><code>docker ps</code></pre>
+                    </div>
+                    <p>You should see both <code>clarion-qdrant</code> and <code>clarion-mcp-server</code> running.</p>
+                </div>
+
+                <div class="step">
+                    <h4>5. Configure Claude Client</h4>
+                    <p>Manually edit your Claude configuration file (see Configuration section below for details).</p>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ Installation Complete!</strong> You're now ready to search Clarion documentation directly from Claude Code.
+                </div>
+            </section>
+
+            <section id="configuration">
+                <h2>⚙️ Configuration</h2>
+                <p>Both Claude Code and Claude Desktop use the same Docker-based MCP configuration. The only difference is the configuration file location.</p>
+
+                <h3>Docker Setup</h3>
+                <p>The Clarion Knowledge Base uses Docker Compose to manage two services:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>Qdrant Database</h4>
+                        <p><strong>Container:</strong> clarion-qdrant</p>
+                        <p><strong>Ports:</strong> 6333 (REST), 6334 (gRPC)</p>
+                        <p><strong>Storage:</strong> 655MB vector database with 21,747 documentation chunks</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>MCP Server</h4>
+                        <p><strong>Container:</strong> clarion-mcp-server</p>
+                        <p><strong>Purpose:</strong> Handles search requests from Claude clients</p>
+                        <p><strong>Connection:</strong> Communicates with Qdrant over Docker network</p>
+                    </div>
+                </div>
+
+                <h3>Claude Code Configuration</h3>
+                <p>Configuration file location: <code>~/.claude.json</code> (all platforms)</p>
+
+                <h4>Windows</h4>
+                <div class="code-block">
+                    <div class="code-header">%USERPROFILE%\.claude.json</div>
+                    <pre><code>{
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}</code></pre>
+                </div>
+                <p>Path typically: <code>C:\Users\YourUsername\.claude.json</code></p>
+
+                <h4>macOS/Linux</h4>
+                <div class="code-block">
+                    <div class="code-header">~/.claude.json</div>
+                    <pre><code>{
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}</code></pre>
+                </div>
+                <p>Path typically: <code>/Users/YourUsername/.claude.json</code> or <code>/home/YourUsername/.claude.json</code></p>
+
+                <h3>Claude Desktop Configuration</h3>
+                <p>The configuration is identical to Claude Code, but the file location varies by OS:</p>
+
+                <h4>Windows</h4>
+                <div class="code-block">
+                    <div class="code-header">%APPDATA%\Claude\claude_desktop_config.json</div>
+                    <pre><code>{
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}</code></pre>
+                </div>
+                <p>Full path typically: <code>C:\Users\YourUsername\AppData\Roaming\Claude\claude_desktop_config.json</code></p>
+
+                <div class="alert alert-info">
+                    <strong>Windows Tip:</strong> Open PowerShell and run <code>echo $env:APPDATA</code> to find your AppData location, then navigate to the <code>Claude</code> folder.
+                </div>
+
+                <h4>macOS</h4>
+                <div class="code-block">
+                    <div class="code-header">~/Library/Application Support/Claude/claude_desktop_config.json</div>
+                    <pre><code>{
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}</code></pre>
+                </div>
+                <p>Full path typically: <code>/Users/YourUsername/Library/Application Support/Claude/claude_desktop_config.json</code></p>
+
+                <div class="alert alert-info">
+                    <strong>macOS Tip:</strong> In Finder, press <code>Cmd+Shift+G</code> and paste <code>~/Library/Application Support/Claude/</code> to navigate to the hidden directory.
+                </div>
+
+                <h4>Linux</h4>
+                <div class="code-block">
+                    <div class="code-header">~/.config/Claude/claude_desktop_config.json</div>
+                    <pre><code>{
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}</code></pre>
+                </div>
+                <p>Full path typically: <code>/home/YourUsername/.config/Claude/claude_desktop_config.json</code></p>
+
+                <div class="alert alert-info">
+                    <strong>Linux Tip:</strong> If using Snap or Flatpak installations of Claude Desktop, the config path may differ. Check your package manager's documentation.
+                </div>
+
+                <h3>Configuration Templates</h3>
+                <p>Pre-configured example files are available in the <code>config/</code> directory:</p>
+                <ul>
+                    <li><code>config/claude_code_example.json</code> - Template for Claude Code</li>
+                    <li><code>config/claude_desktop_example.json</code> - Template for Claude Desktop</li>
+                    <li><code>config/README.md</code> - Detailed configuration instructions</li>
+                </ul>
+
+                <h3>Merging with Existing Configuration</h3>
+                <p>If you already have other MCP servers configured, add the Clarion Knowledge Base entry to your existing <code>mcpServers</code> object:</p>
+
+                <div class="code-block">
+                    <div class="code-header">Example: Multiple MCP Servers</div>
+                    <pre><code>{
+  "mcpServers": {
+    "existing-server": {
+      "command": "node",
+      "args": ["/path/to/existing/server.js"]
+    },
+    "another-server": {
+      "command": "python",
+      "args": ["/path/to/another/server.py"]
+    },
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}</code></pre>
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>JSON Syntax:</strong> Ensure commas are correctly placed between server entries. Use a JSON validator if you encounter errors.
+                </div>
+
+                <h3>Verifying Configuration</h3>
+                <p>After configuring and restarting your Claude client:</p>
+
+                <h4>Claude Code</h4>
+                <ol>
+                    <li>Start Claude Code in any directory</li>
+                    <li>Run: <code>/mcp</code> to list MCP servers</li>
+                    <li>Look for "clarion-knowledge-base" in the list</li>
+                    <li>Test: Ask "Search Clarion docs for QUEUE syntax"</li>
+                </ol>
+
+                <h4>Claude Desktop</h4>
+                <ol>
+                    <li>Restart Claude Desktop completely (quit and relaunch)</li>
+                    <li>Check for MCP server indicator in the interface</li>
+                    <li>Test: Ask "Can you search the Clarion documentation for information about LOOP statements?"</li>
+                    <li>Claude should automatically use the MCP server and return results</li>
+                </ol>
+
+                <h3>Docker Container Management</h3>
+                <p>Common Docker commands for managing the services:</p>
+
+                <div class="code-block">
+                    <div class="code-header">Start Services</div>
+                    <pre><code>docker-compose up -d</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Stop Services</div>
+                    <pre><code>docker-compose down</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">View Logs</div>
+                    <pre><code>docker logs clarion-mcp-server
+docker logs clarion-qdrant</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Restart Services</div>
+                    <pre><code>docker-compose restart</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Check Status</div>
+                    <pre><code>docker ps | grep clarion</code></pre>
+                </div>
+            </section>
+
+            <section id="usage">
+                <h2>💡 Usage</h2>
+
+                <h3>Basic Search</h3>
+                <p>In Claude Code, you can now ask questions about Clarion directly:</p>
+                <div class="code-block">
+                    <div class="code-header">Example Query</div>
+                    <pre><code>How do I define a QUEUE in Clarion?</code></pre>
+                </div>
+
+                <h3>Using the search_docs Tool</h3>
+                <p>Claude Code will automatically use the <code>search_docs</code> tool when appropriate. You can also explicitly request it:</p>
+
+                <h4>Parameters:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>query</code></td>
+                            <td>string</td>
+                            <td>✅ Yes</td>
+                            <td>Natural language search query</td>
+                        </tr>
+                        <tr>
+                            <td><code>max_results</code></td>
+                            <td>integer</td>
+                            <td>❌ No</td>
+                            <td>Number of results (default: 5, max: 20)</td>
+                        </tr>
+                        <tr>
+                            <td><code>min_score</code></td>
+                            <td>float</td>
+                            <td>❌ No</td>
+                            <td>Minimum similarity score 0.0-1.0 (default: 0.3)</td>
+                        </tr>
+                        <tr>
+                            <td><code>doc_type</code></td>
+                            <td>string</td>
+                            <td>❌ No</td>
+                            <td>Filter by document category</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Document Type Filters:</h4>
+                <ul>
+                    <li><code>core_language</code> - Language Reference, Programming Guide</li>
+                    <li><code>libraries</code> - ABC Library, Internet Builder, Business Math</li>
+                    <li><code>ide_development</code> - IDE Reference, User Guide</li>
+                    <li><code>templates</code> - Template Guide, Template Language Reference</li>
+                    <li><code>specialized</code> - Database Drivers, XML Support, Report Writer</li>
+                    <li><code>utilities</code> - FAQs, Tips & Tricks</li>
+                    <li><code>advanced</code> - Advanced Topics, Programming Resources</li>
+                </ul>
+
+                <h3>Understanding Results</h3>
+                <p>Each search result includes:</p>
+                <ul>
+                    <li><strong>Relevance Score:</strong> 0.0-1.0 similarity score (higher = more relevant)</li>
+                    <li><strong>Source Document:</strong> Which Clarion manual the content is from</li>
+                    <li><strong>Document Type:</strong> Category of the documentation</li>
+                    <li><strong>Content:</strong> The relevant excerpt with proper code formatting</li>
+                </ul>
+
+                <div class="alert alert-info">
+                    <strong>💡 Tip:</strong> Scores above 0.6 are generally highly relevant. Scores between 0.4-0.6 may be related but less directly applicable.
+                </div>
+            </section>
+
+            <section id="examples">
+                <h2>📝 Example Queries</h2>
+
+                <h3>Language Syntax Questions</h3>
+                <div class="code-block">
+                    <div class="code-header">Example 1</div>
+                    <pre><code>"What is the syntax for a LOOP statement in Clarion?"</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Example 2</div>
+                    <pre><code>"How do I define a MAP structure with multiple procedures?"</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Example 3</div>
+                    <pre><code>"Show me examples of CASE statements"</code></pre>
+                </div>
+
+                <h3>Library and Class Questions</h3>
+                <div class="code-block">
+                    <div class="code-header">Example 4 (with filter)</div>
+                    <pre><code>search_docs(
+    query="How does the ABC library handle file operations?",
+    doc_type="libraries",
+    max_results=3
+)</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Example 5</div>
+                    <pre><code>"What methods are available in the FileManager class?"</code></pre>
+                </div>
+
+                <h3>Database and SQL Questions</h3>
+                <div class="code-block">
+                    <div class="code-header">Example 6</div>
+                    <pre><code>"How do I connect to an ODBC database in Clarion?"</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Example 7</div>
+                    <pre><code>search_docs(
+    query="SQL connection string examples",
+    doc_type="specialized"
+)</code></pre>
+                </div>
+
+                <h3>Template Questions</h3>
+                <div class="code-block">
+                    <div class="code-header">Example 8</div>
+                    <pre><code>"What are embed points and how do I use them?"</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Example 9</div>
+                    <pre><code>"How do I create a custom template in Clarion?"</code></pre>
+                </div>
+
+                <h3>Troubleshooting and Best Practices</h3>
+                <div class="code-block">
+                    <div class="code-header">Example 10</div>
+                    <pre><code>"Common issues with QUEUE processing"</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Example 11</div>
+                    <pre><code>"Best practices for memory management in Clarion"</code></pre>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>🔧 Troubleshooting</h2>
+
+                <h3>Docker Issues</h3>
+
+                <h4>Docker Not Running</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> "Cannot connect to Docker daemon" or similar errors
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li><strong>Windows:</strong> Start Docker Desktop from Start Menu</li>
+                    <li><strong>macOS:</strong> Launch Docker Desktop from Applications</li>
+                    <li><strong>Linux:</strong> Run <code>sudo systemctl start docker</code></li>
+                    <li>Wait for Docker to fully start (check the Docker icon in system tray)</li>
+                    <li>Verify: <code>docker --version</code></li>
+                </ul>
+
+                <h4>Containers Not Starting</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> <code>docker-compose up</code> fails or containers exit immediately
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Check Container Logs</div>
+                    <pre><code>docker logs clarion-qdrant
+docker logs clarion-mcp-server</code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Check Container Status</div>
+                    <pre><code>docker ps -a | grep clarion</code></pre>
+                </div>
+                <p>Common causes:</p>
+                <ul>
+                    <li><strong>Port conflicts:</strong> Ports 6333/6334 already in use by another service</li>
+                    <li><strong>Insufficient resources:</strong> Allocate at least 4GB RAM to Docker</li>
+                    <li><strong>Corrupted volumes:</strong> Remove and recreate: <code>docker-compose down -v && docker-compose up -d</code></li>
+                </ul>
+
+                <h4>Docker Permissions (Linux)</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> "Permission denied" when running Docker commands
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Add User to Docker Group</div>
+                    <pre><code>sudo usermod -aG docker $USER
+# Log out and back in for changes to take effect</code></pre>
+                </div>
+
+                <h3>MCP Server Connection Issues</h3>
+
+                <h4>Claude Code - Server Not Appearing</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> "clarion-knowledge-base" doesn't show in MCP servers list
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ol>
+                    <li><strong>Verify configuration file exists:</strong>
+                        <ul>
+                            <li>Windows: <code>%USERPROFILE%\.claude.json</code></li>
+                            <li>macOS/Linux: <code>~/.claude.json</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Check JSON syntax:</strong> Use a JSON validator to ensure no syntax errors</li>
+                    <li><strong>Verify Docker containers are running:</strong> <code>docker ps | grep clarion</code></li>
+                    <li><strong>Restart Claude Code completely</strong></li>
+                    <li><strong>Check Claude Code logs</strong> for error messages</li>
+                </ol>
+
+                <h4>Claude Desktop - Server Not Appearing</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> MCP server doesn't show up in Claude Desktop
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ol>
+                    <li><strong>Verify configuration file location:</strong>
+                        <ul>
+                            <li>Windows: <code>%APPDATA%\Claude\claude_desktop_config.json</code></li>
+                            <li>macOS: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+                            <li>Linux: <code>~/.config/Claude/claude_desktop_config.json</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Create directory if missing:</strong>
+                        <div class="code-block">
+                            <div class="code-header">Windows PowerShell</div>
+                            <pre><code>New-Item -ItemType Directory -Force -Path "$env:APPDATA\Claude"</code></pre>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">macOS/Linux</div>
+                            <pre><code>mkdir -p ~/Library/Application\ Support/Claude  # macOS
+mkdir -p ~/.config/Claude  # Linux</code></pre>
+                        </div>
+                    </li>
+                    <li><strong>Quit Claude Desktop completely</strong> (not just close window)</li>
+                    <li><strong>Verify Docker containers are running</strong></li>
+                    <li><strong>Relaunch Claude Desktop</strong></li>
+                </ol>
+
+                <h4>Connection to MCP Server Fails</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> MCP server listed but queries fail
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Test Docker Exec</div>
+                    <pre><code>docker exec -i clarion-mcp-server python /app/src/mcp_server.py
+# Should wait for input. Press Ctrl+C to exit.</code></pre>
+                </div>
+                <ul>
+                    <li>If the command fails, the MCP server container isn't running properly</li>
+                    <li>Check container logs: <code>docker logs clarion-mcp-server</code></li>
+                    <li>Restart services: <code>docker-compose restart</code></li>
+                </ul>
+
+                <h3>Search and Query Issues</h3>
+
+                <h4>No Search Results</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> Searches return 0 results or empty responses
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ol>
+                    <li><strong>Verify vector database is populated:</strong>
+                        <div class="code-block">
+                            <div class="code-header">Check Collection</div>
+                            <pre><code>curl http://localhost:6333/collections/clarion_docs</code></pre>
+                        </div>
+                        <p>Should show <code>"points_count": 21747</code> (or similar)</p>
+                    </li>
+                    <li><strong>If points_count is 0:</strong> Run the snapshot import script</li>
+                    <li><strong>Check Qdrant is accessible:</strong>
+                        <div class="code-block">
+                            <div class="code-header">Test Qdrant</div>
+                            <pre><code>curl http://localhost:6333/health</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <h4>Slow Search Performance</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> Searches take more than 5 seconds
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li><strong>First query is slower:</strong> Initial model loading takes 3-5 seconds. Subsequent queries are sub-1-second.</li>
+                    <li><strong>Increase Docker resources:</strong> Allocate at least 4GB RAM to Docker Desktop</li>
+                    <li><strong>Check system resources:</strong> Ensure sufficient CPU and RAM available</li>
+                    <li><strong>Restart containers if performance degrades:</strong> <code>docker-compose restart</code></li>
+                </ul>
+
+                <h4>Search Quality Issues</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> Results not relevant to query
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li><strong>Be more specific:</strong> "QUEUE sorting examples" vs. "QUEUE"</li>
+                    <li><strong>Use filter parameters:</strong> Specify <code>doc_type</code> to narrow results</li>
+                    <li><strong>Check relevance scores:</strong> Scores below 0.4 may not be relevant</li>
+                    <li><strong>Increase max_results:</strong> Get more results to find relevant ones</li>
+                </ul>
+
+                <h3>Platform-Specific Issues</h3>
+
+                <h4>Windows</h4>
+                <div class="alert alert-warning">
+                    <strong>Issue:</strong> PowerShell execution policy blocks scripts
+                </div>
+                <p><strong>Solution:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Set Execution Policy</div>
+                    <pre><code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code></pre>
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>Issue:</strong> Can't find AppData folder
+                </div>
+                <p><strong>Solution:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">PowerShell</div>
+                    <pre><code>explorer $env:APPDATA</code></pre>
+                </div>
+
+                <h4>macOS</h4>
+                <div class="alert alert-warning">
+                    <strong>Issue:</strong> Can't access Application Support folder
+                </div>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li>In Finder, press <code>Cmd+Shift+G</code></li>
+                    <li>Paste: <code>~/Library/Application Support/Claude/</code></li>
+                    <li>Or use Terminal: <code>open ~/Library/Application\ Support/Claude/</code></li>
+                </ul>
+
+                <div class="alert alert-warning">
+                    <strong>Issue:</strong> Docker commands require sudo
+                </div>
+                <p><strong>Solution:</strong> Ensure Docker Desktop is running (not just Docker daemon)</p>
+
+                <h4>Linux</h4>
+                <div class="alert alert-warning">
+                    <strong>Issue:</strong> Claude Desktop installed via Snap/Flatpak has different config path
+                </div>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li><strong>Snap:</strong> Check <code>~/snap/claude/current/.config/Claude/</code></li>
+                    <li><strong>Flatpak:</strong> Check <code>~/.var/app/com.anthropic.claude/config/Claude/</code></li>
+                    <li>Consult your package manager's documentation for exact paths</li>
+                </ul>
+
+                <h3>Configuration File Issues</h3>
+
+                <h4>JSON Syntax Errors</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> Configuration file not recognized or parsing errors
+                </div>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li><strong>Validate JSON syntax:</strong> Use <a href="https://jsonlint.com/" target="_blank">JSONLint.com</a></li>
+                    <li><strong>Check for common errors:</strong>
+                        <ul>
+                            <li>Missing or extra commas</li>
+                            <li>Unmatched brackets or braces</li>
+                            <li>Unescaped backslashes in Windows paths (use <code>\\</code> or <code>/</code>)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Use example files:</strong> Copy from <code>config/claude_*_example.json</code></li>
+                </ul>
+
+                <h4>Multiple MCP Servers Conflict</h4>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> Existing MCP servers stop working after adding Clarion KB
+                </div>
+                <p><strong>Solution:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Correct Format</div>
+                    <pre><code>{
+  "mcpServers": {
+    "server1": { ... },  // Note comma here
+    "server2": { ... },  // Note comma here
+    "clarion-knowledge-base": { ... }  // No comma on last entry
+  }
+}</code></pre>
+                </div>
+
+                <h3>Testing and Verification</h3>
+
+                <h4>Manual MCP Server Test</h4>
+                <p>Test the MCP server directly without Claude:</p>
+                <div class="code-block">
+                    <div class="code-header">Direct Test</div>
+                    <pre><code>docker exec -i clarion-mcp-server python /app/src/mcp_server.py</code></pre>
+                </div>
+                <p>Server should wait for JSON-RPC input. Press Ctrl+C to exit. If it exits immediately or shows errors, check container logs.</p>
+
+                <h4>Check Qdrant Health</h4>
+                <div class="code-block">
+                    <div class="code-header">Health Check</div>
+                    <pre><code>curl http://localhost:6333/health</code></pre>
+                </div>
+                <p>Should return: <code>{"title":"qdrant - vector search engine","version":"..."}</code></p>
+
+                <h4>Verify Collection</h4>
+                <div class="code-block">
+                    <div class="code-header">Collection Info</div>
+                    <pre><code>curl http://localhost:6333/collections/clarion_docs</code></pre>
+                </div>
+                <p>Check for <code>"points_count": 21747</code> and <code>"status": "green"</code></p>
+
+                <h3>Still Having Issues?</h3>
+                <p>If problems persist after trying the above solutions:</p>
+                <ol>
+                    <li><strong>Collect diagnostic information:</strong>
+                        <ul>
+                            <li>Docker version: <code>docker --version</code></li>
+                            <li>Container status: <code>docker ps -a | grep clarion</code></li>
+                            <li>Container logs: <code>docker logs clarion-mcp-server</code></li>
+                            <li>Config file location and contents (redact sensitive info)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Try a clean reinstall:</strong>
+                        <div class="code-block">
+                            <div class="code-header">Clean Reinstall</div>
+                            <pre><code># Stop and remove containers
+docker-compose down -v
+
+# Remove images
+docker rmi clarion-mcp-server qdrant/qdrant
+
+# Restart installation
+docker-compose up -d</code></pre>
+                        </div>
+                    </li>
+                    <li><strong>Check system requirements:</strong>
+                        <ul>
+                            <li>Docker Desktop properly installed and running</li>
+                            <li>At least 4GB RAM allocated to Docker</li>
+                            <li>Sufficient disk space (1GB+ free)</li>
+                            <li>No firewall blocking localhost ports 6333/6334</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="alert alert-info">
+                    <strong>Getting Help:</strong> For additional support, consult the <code>config/README.md</code> file for detailed configuration instructions and troubleshooting tips.
+                </div>
+            </section>
+
+            <section id="technical">
+                <h2>⚙️ Technical Details</h2>
+
+                <h3>Architecture Overview</h3>
+                <pre><code>User Query (Claude Code)
+    ↓
+MCP Server (src/mcp_server.py)
+    ↓
+Embedding Model (sentence-transformers/all-mpnet-base-v2)
+    ↓
+Vector Similarity Search (Qdrant)
+    ↓
+Relevant Documentation Chunks
+    ↓
+Formatted Response with Source Citations</code></pre>
+
+                <h3>Performance Metrics</h3>
+                <div class="metrics">
+                    <div class="metric-card">
+                        <div class="metric-value">21</div>
+                        <div class="metric-label">PDFs Indexed</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">~22K</div>
+                        <div class="metric-label">Knowledge Chunks</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">&lt;1s</div>
+                        <div class="metric-label">Search Time</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">0.67</div>
+                        <div class="metric-label">Avg Relevance</div>
+                    </div>
+                </div>
+
+                <h3>Components</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Technology</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PDF Processing</td>
+                            <td>PyMuPDF</td>
+                            <td>Extract text from PDF documents</td>
+                        </tr>
+                        <tr>
+                            <td>Text Chunking</td>
+                            <td>LangChain</td>
+                            <td>Semantic chunking (800 chars, 100 overlap)</td>
+                        </tr>
+                        <tr>
+                            <td>Embeddings</td>
+                            <td>all-mpnet-base-v2</td>
+                            <td>768-dimensional vector embeddings</td>
+                        </tr>
+                        <tr>
+                            <td>Vector Store</td>
+                            <td>Qdrant</td>
+                            <td>Efficient similarity search</td>
+                        </tr>
+                        <tr>
+                            <td>MCP Server</td>
+                            <td>Python MCP SDK</td>
+                            <td>Protocol implementation</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>System Requirements</h3>
+                <ul>
+                    <li><strong>CPU:</strong> Modern multi-core processor (4+ cores recommended)</li>
+                    <li><strong>RAM:</strong> 8GB minimum, 16GB recommended</li>
+                    <li><strong>Disk:</strong> 10GB free space</li>
+                    <li><strong>Network:</strong> Internet connection for initial setup (downloading models)</li>
+                </ul>
+
+                <h3>Document Coverage</h3>
+                <p>The system indexes the following Clarion documentation:</p>
+                <ul>
+                    <li>ABC Library Reference</li>
+                    <li>Advanced Programming Resources</li>
+                    <li>Advanced Topics Reference Guide</li>
+                    <li>Application Broker</li>
+                    <li>Business Math Library</li>
+                    <li>Clarion IDE Quick Reference</li>
+                    <li>Clarion Language Programming</li>
+                    <li>Clarion XML Support</li>
+                    <li>Database Drivers and Interfaces</li>
+                    <li>FAQs, Tips & Tricks</li>
+                    <li>Getting Started</li>
+                    <li>IDE Reference</li>
+                    <li>IDE Users Guide</li>
+                    <li>Internet Builder Class Reference</li>
+                    <li>Language Reference</li>
+                    <li>Learning Clarion</li>
+                    <li>Report Writer</li>
+                    <li>Template Guide</li>
+                    <li>Template Language Reference</li>
+                    <li>Using Subversion</li>
+                    <li>And more...</li>
+                </ul>
+
+                <h3>Processing Pipeline</h3>
+                <ol>
+                    <li><strong>PDF Extraction:</strong> Raw text extraction preserving formatting</li>
+                    <li><strong>Markdown Conversion:</strong> Convert to structured Markdown</li>
+                    <li><strong>Semantic Chunking:</strong> Split into meaningful 800-character segments</li>
+                    <li><strong>Embedding Generation:</strong> Create 768-dimensional vectors</li>
+                    <li><strong>Vector Storage:</strong> Upload to Qdrant with metadata</li>
+                    <li><strong>Indexing:</strong> Build similarity search indexes</li>
+                </ol>
+            </section>
+
+            <section id="support">
+                <h2>📞 Support & Contribution</h2>
+
+                <h3>Version Information</h3>
+                <p><strong>Current Version:</strong> 1.0.0</p>
+                <p><strong>Release Date:</strong> October 2025</p>
+                <p><strong>Status:</strong> Production Ready ✅</p>
+
+                <h3>License</h3>
+                <p>This tool is provided as-is for use by Clarion developers. The Clarion documentation remains property of SoftVelocity Inc.</p>
+
+                <h3>Acknowledgements</h3>
+                <p>Built with:</p>
+                <ul>
+                    <li>Anthropic's Model Context Protocol (MCP)</li>
+                    <li>Sentence Transformers (Hugging Face)</li>
+                    <li>Qdrant Vector Database</li>
+                    <li>LangChain for document processing</li>
+                </ul>
+
+                <div class="alert alert-info">
+                    <strong>🎯 Pro Tip:</strong> The more specific your questions, the better the results. Instead of "tell me about QUEUE", try "How do I sort a QUEUE by multiple fields?"
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Clarion Knowledge Base MCP Server</p>
+            <p>For Clarion Developers, By Clarion Developers</p>
+        </footer>
+    </div>
+</body>
+</html>

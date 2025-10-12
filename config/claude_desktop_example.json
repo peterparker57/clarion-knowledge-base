@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"]
+    }
+  }
+}

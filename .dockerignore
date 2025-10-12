@@ -1,0 +1,64 @@
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg-info/
+dist/
+build/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data - exclude large chunk files (will be in vector DB)
+data/chunks/
+data/raw/
+
+# Documents - exclude source PDFs (not needed in container)
+Documents/
+*.pdf
+
+# Temporary files
+temp_snapshot/
+*.tmp
+*.log
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# GitHub
+.github/
+
+# Scripts (not needed in runtime)
+scripts/
+
+# Testing
+tests/
+pytest.ini
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Other
+README.md
+PROJECT_PLAN.md
+*.md
+!documentation/*.html
