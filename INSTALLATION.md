@@ -7,7 +7,11 @@ This guide provides detailed instructions for installing the Clarion Knowledge B
 **The fastest and easiest way to install is using the Claude Code plugin system:**
 
 ```bash
-/plugin add peterparker57/clarion-knowledge-base
+# Step 1: Add the marketplace
+/plugin marketplace add peterparker57/clarion-knowledge-base
+
+# Step 2: Install the plugin
+/plugin install clarion-knowledge-base
 ```
 
 **Installation time:** 30-60 seconds
@@ -38,7 +42,7 @@ If you prefer manual installation, need more control, or are setting up for Clau
 | Aspect | Plugin | Manual |
 |--------|--------|--------|
 | Installation Time | 30-60 seconds | 5-10 minutes |
-| Command | `/plugin add` | Clone + scripts |
+| Commands | `/plugin marketplace add` + `/plugin install` | Clone + scripts |
 | Configuration | Automatic | Script-assisted or manual |
 | Best For | Most users | Advanced users, Claude Desktop |
 | Updates | `/plugin update` | Git pull + rebuild |

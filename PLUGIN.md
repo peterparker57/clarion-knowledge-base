@@ -11,10 +11,28 @@ The Clarion Knowledge Base plugin gives Claude instant access to 21,747 indexed 
 ## Quick Installation
 
 ```bash
-/plugin add peterparker57/clarion-knowledge-base
+# Step 1: Add the marketplace
+/plugin marketplace add peterparker57/clarion-knowledge-base
+
+# Step 2: Install the plugin
+/plugin install clarion-knowledge-base
 ```
 
 That's all you need! The plugin system handles everything automatically.
+
+### Understanding the Two-Step Process
+
+1. **Add the marketplace** (`/plugin marketplace add`)
+   - This registers the Clarion Knowledge Base repository with Claude Code
+   - You only need to do this once
+   - The marketplace tells Claude Code where to find available plugins
+
+2. **Install the plugin** (`/plugin install`)
+   - This downloads the plugin configuration
+   - Runs the automated Docker setup script
+   - Configures the MCP server in your Claude Code environment
+
+After installation, you can update the plugin later with `/plugin update clarion-knowledge-base`.
 
 ### Prerequisites
 

@@ -40,7 +40,11 @@ Instantly search across 21 Clarion documentation manuals using natural language 
 **The easiest way to install is using the Claude Code plugin system:**
 
 ```bash
-/plugin add peterparker57/clarion-knowledge-base
+# Step 1: Add the marketplace
+/plugin marketplace add peterparker57/clarion-knowledge-base
+
+# Step 2: Install the plugin
+/plugin install clarion-knowledge-base
 ```
 
 That's it! The plugin will automatically:
@@ -51,7 +55,7 @@ That's it! The plugin will automatically:
 
 **Requirements:** Docker Desktop must be installed and running.
 
-After installation, you can use slash commands like `/clarion-search` or simply ask Claude questions about Clarion programming!
+After installation, restart Claude Code and you can use slash commands like `/clarion-search` or simply ask Claude questions about Clarion programming!
 
 ---
 

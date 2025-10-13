@@ -1,32 +1,49 @@
 {
-  "name": "clarion-knowledge-base",
-  "version": "1.1.0",
-  "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
-  "author": "peterparker57",
-  "repository": "https://github.com/peterparker57/clarion-knowledge-base",
-  "homepage": "https://github.com/peterparker57/clarion-knowledge-base",
-  "license": "MIT",
-  "tags": ["clarion", "documentation", "search", "mcp", "qdrant"],
-
-  "mcpServers": {
-    "clarion-knowledge-base": {
-      "command": "docker",
-      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"],
-      "description": "Semantic search across Clarion programming documentation"
-    }
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "clarion-knowledge-base-marketplace",
+  "version": "1.1.1",
+  "description": "Clarion programming documentation search for Claude Code",
+  "owner": {
+    "name": "peterparker57",
+    "email": "support@clarion-kb.com"
   },
+  "plugins": [
+    {
+      "name": "clarion-knowledge-base",
+      "version": "1.1.1",
+      "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
+      "author": {
+        "name": "peterparker57"
+      },
+      "repository": "https://github.com/peterparker57/clarion-knowledge-base",
+      "homepage": "https://github.com/peterparker57/clarion-knowledge-base",
+      "license": "MIT",
+      "source": ".",
+      "category": "documentation",
+      "tags": ["clarion", "documentation", "search", "mcp", "qdrant"],
+      "strict": false,
 
-  "hooks": {
-    "postInstall": {
-      "command": "bash",
-      "args": ["scripts/plugin-install.sh"]
-    }
-  },
+      "mcpServers": {
+        "clarion-knowledge-base": {
+          "command": "docker",
+          "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"],
+          "description": "Semantic search across Clarion programming documentation"
+        }
+      },
 
-  "requirements": {
-    "docker": {
-      "required": true,
-      "message": "Docker Desktop must be installed and running. Download from: https://www.docker.com/products/docker-desktop"
+      "hooks": {
+        "postInstall": {
+          "command": "bash",
+          "args": ["scripts/plugin-install.sh"]
+        }
+      },
+
+      "requirements": {
+        "docker": {
+          "required": true,
+          "message": "Docker Desktop must be installed and running. Download from: https://www.docker.com/products/docker-desktop"
+        }
+      }
     }
-  }
+  ]
 }
