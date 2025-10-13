@@ -12,7 +12,7 @@ The Clarion Knowledge Base plugin gives Claude instant access to 21,747 indexed 
 
 ```bash
 # Step 1: Add the marketplace
-/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
+/plugin marketplace add peterparker57/clarion-knowledge-base
 
 # Step 2: Install the plugin
 /plugin install clarion-knowledge-base
