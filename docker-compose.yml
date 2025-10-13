@@ -41,6 +41,8 @@ services:
       - ./src:/app/src:ro
       # Mount processed data (optional - for regenerating if needed)
       - ./data/processed:/app/data/processed:ro
+      - ./scripts:/app/scripts:ro
+      - ./qdrant-snapshot.tar.gz:/app/qdrant-snapshot.tar.gz:ro
     networks:
       - clarion-network
     restart: unless-stopped

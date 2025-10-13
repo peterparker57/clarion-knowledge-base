@@ -30,7 +30,7 @@ import tarfile
 import shutil
 
 # Configuration
-QDRANT_URL = "http://localhost:6333"
+QDRANT_URL = os.environ.get("QDRANT_HOST", "http://qdrant:6333")
 COLLECTION_NAME = "clarion_docs"
 DEFAULT_SNAPSHOT_FILE = "qdrant-snapshot.tar.gz"
 

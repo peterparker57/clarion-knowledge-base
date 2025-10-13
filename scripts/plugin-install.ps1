@@ -57,9 +57,9 @@ if (!(Test-Path $SnapshotFile)) {
 }
 
 # 4. Build Docker images
-Write-Host "Building Docker images..." -ForegroundColor Yellow
+Write-Host "Building Docker images (this may take 3-5 minutes on first run)..." -ForegroundColor Yellow
 try {
-    docker-compose build --quiet
+    docker-compose build
     Write-Host "✓ Images built" -ForegroundColor Green
 } catch {
     Write-Host "Error building images: $_" -ForegroundColor Red
@@ -106,7 +106,7 @@ while ($Attempt -lt $MaxAttempts) {
 # 7. Import snapshot
 Write-Host "Importing vector database..." -ForegroundColor Yellow
 try {
-    docker exec clarion-mcp-server python /app/scripts/import_snapshot.py "/app/$SnapshotFile"
+    docker exec clarion-mcp-server python scripts/import_snapshot.py qdrant-snapshot.tar.gz
     Write-Host "✓ Database imported" -ForegroundColor Green
 } catch {
     Write-Host "Error importing database: $_" -ForegroundColor Red

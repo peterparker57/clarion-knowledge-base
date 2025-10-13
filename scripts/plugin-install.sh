@@ -49,8 +49,8 @@ else
 fi
 
 # 4. Build Docker images
-echo -e "${YELLOW}Building Docker images...${NC}"
-docker-compose build --quiet
+echo -e "${YELLOW}Building Docker images (this may take 3-5 minutes on first run)...${NC}"
+docker-compose build
 echo -e "${GREEN}✓ Images built${NC}"
 
 # 5. Start containers
@@ -74,7 +74,7 @@ done
 
 # 7. Import snapshot
 echo -e "${YELLOW}Importing vector database...${NC}"
-docker exec clarion-mcp-server python /app/scripts/import_snapshot.py "/app/$SNAPSHOT_FILE"
+docker exec clarion-mcp-server python scripts/import_snapshot.py qdrant-snapshot.tar.gz
 echo -e "${GREEN}✓ Database imported${NC}"
 
 # 8. Verify collection

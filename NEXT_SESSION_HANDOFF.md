@@ -1,20 +1,62 @@
 # Session Handoff - Clarion Knowledge Base Plugin
 
 **Date:** October 13, 2025
-**Current Version:** v1.1.9
-**Status:** WORKING - Fixed commands schema (array format)
+**Current Version:** v1.2.0
+**Status:** WORKING - Automated setup scripts fixed
 
 ---
 
 ## Current Status
 
-The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.1.9 fixes the commands schema validation error.
+The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.2.0 fixes the automated setup scripts to enable fully automated installation.
 
 ### Latest Release
-- **Version:** v1.1.9
-- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.9
+- **Version:** v1.2.0
+- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.2.0
 - **Repository:** https://github.com/peterparker57/clarion-knowledge-base (PUBLIC)
-- **Status:** ✅ WORKING - Commands schema fixed (array format), ready for testing
+- **Status:** ✅ WORKING - Automated setup now works without manual intervention
+
+---
+
+## What's New in v1.2.0
+
+### Automated Setup Script Fixes
+
+**Problem in v1.1.9:**
+- Plugin loaded and worked correctly when set up manually
+- But `/clarion-setup` command didn't complete automatically
+- Users had to run manual Docker commands to complete installation
+- Installation scripts had timeout and path issues
+
+**Fixes in v1.2.0:**
+
+1. **Dockerfile** - Added scripts/ directory to Docker image
+   - Container now has access to import_snapshot.py script
+   - Fixes "No such file or directory" error
+
+2. **docker-compose.yml** - Added volume mounts
+   - Mounted `./scripts:/app/scripts:ro`
+   - Mounted `./qdrant-snapshot.tar.gz:/app/qdrant-snapshot.tar.gz:ro`
+   - Container can now access files needed for automated import
+
+3. **scripts/import_snapshot.py** - Docker-aware Qdrant connection
+   - Changed from hardcoded `localhost:6333` to `os.environ.get("QDRANT_HOST", "http://qdrant:6333")`
+   - Works automatically in Docker (uses "qdrant" service name)
+   - Can override for local testing with environment variable
+
+4. **scripts/plugin-install.ps1** (PowerShell)
+   - Removed `--quiet` flag from docker-compose build
+   - Added progress message: "Building Docker images (this may take 3-5 minutes on first run)..."
+   - Fixed import command path: changed from `/app/scripts/...` to `scripts/...`
+   - Avoids Windows Git Bash path translation issues
+
+5. **scripts/plugin-install.sh** (Bash)
+   - Same fixes as PowerShell version for Linux/Mac users
+   - Users now see build progress instead of frozen terminal
+   - Path issues resolved
+
+**Result:**
+Users can now run `/clarion-setup` and the entire installation completes automatically without manual Docker commands!
 
 ---
 
@@ -171,7 +213,8 @@ When a user installs the plugin:
 
 | Version | Status | Issue/Fix |
 |---------|--------|-------|
-| **v1.1.9** | ✅ **Current** | WORKING! Fixed commands schema - array format not object |
+| **v1.2.0** | ✅ **Current** | WORKING! Fixed automated setup scripts - Docker config, paths, and progress messages |
+| v1.1.9 | ✅ Working | Fixed commands schema - array format not object |
 | v1.1.8 | ❌ Broken | Commands validation error - used object format instead of array |
 | v1.1.7 | ⚠️ Partial | Plugin loads, but slash commands not registered in plugin.json |
 | v1.1.6 | ❌ Broken | PostInstall hook doesn't exist in Claude Code (only PreToolUse, PostToolUse, etc.) |

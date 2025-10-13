@@ -23,6 +23,9 @@ COPY src/ ./src/
 # Copy documentation (optional, for reference)
 COPY documentation/ ./documentation/
 
+# Copy scripts for snapshot import/export
+COPY scripts/ ./scripts/
+
 # Create data directory structure
 RUN mkdir -p /app/data/processed
 

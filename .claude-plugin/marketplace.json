@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "clarion-knowledge-base-marketplace",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "Clarion programming documentation search for Claude Code",
   "owner": {
     "name": "peterparker57",
@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "clarion-knowledge-base",
-      "version": "1.1.9",
+      "version": "1.2.0",
       "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
       "author": {
         "name": "peterparker57"
