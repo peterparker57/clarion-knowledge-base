@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "clarion-knowledge-base-marketplace",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Clarion programming documentation search for Claude Code",
   "owner": {
     "name": "peterparker57",
@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "clarion-knowledge-base",
-      "version": "1.1.4",
+      "version": "1.1.5",
       "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
       "author": {
         "name": "peterparker57"
@@ -18,32 +18,10 @@
       "repository": "https://github.com/peterparker57/clarion-knowledge-base",
       "homepage": "https://github.com/peterparker57/clarion-knowledge-base",
       "license": "MIT",
-      "source": ".",
+      "source": "./",
       "category": "documentation",
       "tags": ["clarion", "documentation", "search", "mcp", "qdrant"],
-      "strict": false,
-
-      "mcpServers": {
-        "clarion-knowledge-base": {
-          "command": "docker",
-          "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"],
-          "description": "Semantic search across Clarion programming documentation"
-        }
-      },
-
-      "hooks": {
-        "postInstall": {
-          "command": "bash",
-          "args": ["scripts/plugin-install.sh"]
-        }
-      },
-
-      "requirements": {
-        "docker": {
-          "required": true,
-          "message": "Docker Desktop must be installed and running. Download from: https://www.docker.com/products/docker-desktop"
-        }
-      }
+      "strict": true
     }
   ]
 }
