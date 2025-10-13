@@ -12,7 +12,7 @@
 Convert the existing MCP server into a Claude Code plugin for easy installation:
 ```bash
 # Add the marketplace
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 
 # Install the plugin
 /plugin install clarion-knowledge-base
@@ -324,7 +324,7 @@ Semantic search for Clarion programming documentation via Claude AI.
 
 ```bash
 # Step 1: Add the marketplace
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 
 # Step 2: Install the plugin
 /plugin install clarion-knowledge-base
@@ -358,7 +358,7 @@ That's it! Restart Claude Code and start asking about Clarion.
 **Test commands:**
 ```bash
 # 1. Add marketplace
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 
 # 2. Install plugin
 /plugin install clarion-knowledge-base
@@ -391,7 +391,7 @@ Ask: "How do I create a browse in Clarion?"
 3. No previous Clarion Knowledge Base setup
 4. Run installation commands:
    ```bash
-   /plugin marketplace add peterparker57/clarion-knowledge-base
+   /plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
    /plugin install clarion-knowledge-base
    ```
 5. Verify complete installation
@@ -413,7 +413,7 @@ git commit -m "Add Claude Code plugin support
 - Create PLUGIN.md with plugin-specific docs
 
 This enables easy two-step installation:
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 /plugin install clarion-knowledge-base
 
 🤖 Generated with Claude Code
@@ -438,7 +438,7 @@ You can now install the Clarion Knowledge Base with two simple commands:
 
 ```bash
 # Add the marketplace
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 
 # Install the plugin
 /plugin install clarion-knowledge-base
@@ -458,7 +458,7 @@ Installation takes ~30 seconds and handles all Docker setup automatically!
 
 ### Plugin (Recommended)
 ```bash
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 /plugin install clarion-knowledge-base
 ```
 

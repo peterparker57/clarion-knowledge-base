@@ -8,7 +8,7 @@ This guide provides detailed instructions for installing the Clarion Knowledge B
 
 ```bash
 # Step 1: Add the marketplace
-/plugin marketplace add peterparker57/clarion-knowledge-base
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
 
 # Step 2: Install the plugin
 /plugin install clarion-knowledge-base
