@@ -1,20 +1,46 @@
 # Session Handoff - Clarion Knowledge Base Plugin
 
 **Date:** October 13, 2025
-**Current Version:** v1.1.7
-**Status:** WORKING - PostInstall hooks removed (not supported), manual setup via /clarion-setup
+**Current Version:** v1.1.8
+**Status:** WORKING - Plugin loads correctly, slash commands registered
 
 ---
 
 ## Current Status
 
-The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.1.7 removes the unsupported PostInstall hook and uses a manual setup command instead.
+The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.1.8 is WORKING - plugin loads without errors and slash commands are registered.
 
 ### Latest Release
-- **Version:** v1.1.7
-- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.7 (pending)
+- **Version:** v1.1.8
+- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.8
 - **Repository:** https://github.com/peterparker57/clarion-knowledge-base (PUBLIC)
-- **Status:** WORKING - Hooks removed, manual setup via /clarion-setup command
+- **Status:** ✅ WORKING - Plugin loads, slash commands registered, ready for testing
+
+---
+
+## What's New in v1.1.8
+
+### Slash Commands Now Work!
+
+**Problem in v1.1.7:**
+- Plugin loaded correctly (no validation errors)
+- But `/clarion-setup` gave "unknown slash command" error
+- Command files existed but weren't registered
+
+**Fixed in v1.1.8:**
+Added `commands` section to plugin.json:
+```json
+"commands": {
+  "clarion-setup": "./.claude/commands/clarion-setup.md",
+  "clarion-search": "./.claude/commands/clarion-search.md",
+  "clarion-status": "./.claude/commands/clarion-status.md"
+}
+```
+
+Now users can run:
+- `/clarion-setup` - Run Docker setup after installation
+- `/clarion-search [query]` - Search documentation
+- `/clarion-status` - Check container status
 
 ---
 
@@ -124,7 +150,8 @@ When a user installs the plugin:
 
 | Version | Status | Issue/Fix |
 |---------|--------|-------|
-| **v1.1.7** | ✅ **Current** | WORKING! Removed hooks (PostInstall doesn't exist), manual setup via /clarion-setup |
+| **v1.1.8** | ✅ **Current** | WORKING! Added commands section to register slash commands |
+| v1.1.7 | ⚠️ Partial | Plugin loads, but slash commands not registered in plugin.json |
 | v1.1.6 | ❌ Broken | PostInstall hook doesn't exist in Claude Code (only PreToolUse, PostToolUse, etc.) |
 | v1.1.5 | ❌ Broken | Hook schema error: "postInstall" lowercase, object format instead of string |
 | v1.1.4 | ❌ Broken | Schema errors: hooks in marketplace.json, source "." |
@@ -163,15 +190,18 @@ When a user installs the plugin:
 - ❌ **v1.1.4:** Schema validation errors (hooks in marketplace.json, source ".")
 - ❌ **v1.1.5:** Hook schema error ("postInstall" lowercase, object format invalid)
 - ❌ **v1.1.6:** PostInstall hook doesn't exist (Claude Code doesn't support it)
+- ✅ **v1.1.7:** Plugin loaded without validation errors! (But slash commands not working)
 
-### What Needs Testing (v1.1.7)
+### What Needs Testing (v1.1.8)
 1. ⏳ Add marketplace: `/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git`
-2. ⏳ Install plugin: `/plugin install clarion-knowledge-base` (should work without errors!)
-3. ⏳ Run setup: `/clarion-setup` (downloads and configures Docker)
-4. ⏳ Restart Claude Code
-5. ⏳ Test MCP tool: Ask "How do I create a browse procedure in Clarion?"
-6. ⏳ Test on Mac/Linux (if possible)
-7. ⏳ **DO NOT INSTALL ON DEV MACHINE** (will conflict with existing Docker setup)
+2. ⏳ Install plugin: `/plugin install clarion-knowledge-base` (should work!)
+3. ⏳ Verify slash commands work: `/clarion-setup` (should not say "unknown command")
+4. ⏳ Run Docker setup (downloads 76MB, builds containers)
+5. ⏳ Restart Claude Code
+6. ⏳ Test MCP tool: Ask "How do I create a browse procedure in Clarion?"
+7. ⏳ Test other slash commands: `/clarion-status`, `/clarion-search browse`
+8. ⏳ Test on Mac/Linux (if possible)
+9. ⏳ **DO NOT INSTALL ON DEV MACHINE** (will conflict with existing Docker setup)
 
 ### Recommended Testing Approach
 User should test marketplace registration (steps 1-3 above) on their dev machine to verify the schema is valid. Full installation should be tested on a clean machine or by an end user.
