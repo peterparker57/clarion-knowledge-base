@@ -1,46 +1,67 @@
 # Session Handoff - Clarion Knowledge Base Plugin
 
 **Date:** October 13, 2025
-**Current Version:** v1.1.8
-**Status:** WORKING - Plugin loads correctly, slash commands registered
+**Current Version:** v1.1.9
+**Status:** WORKING - Fixed commands schema (array format)
 
 ---
 
 ## Current Status
 
-The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.1.8 is WORKING - plugin loads without errors and slash commands are registered.
+The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.1.9 fixes the commands schema validation error.
 
 ### Latest Release
-- **Version:** v1.1.8
-- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.8
+- **Version:** v1.1.9
+- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.9
 - **Repository:** https://github.com/peterparker57/clarion-knowledge-base (PUBLIC)
-- **Status:** ✅ WORKING - Plugin loads, slash commands registered, ready for testing
+- **Status:** ✅ WORKING - Commands schema fixed (array format), ready for testing
+
+---
+
+## What's New in v1.1.9
+
+### Commands Schema Fixed!
+
+**Problem in v1.1.8:**
+- Used object format for commands (WRONG)
+- Caused validation error: "commands: Invalid input"
+
+**Wrong format (v1.1.8):**
+```json
+"commands": {
+  "clarion-setup": "./.claude/commands/clarion-setup.md"
+}
+```
+
+**Fixed in v1.1.9:**
+Commands must be an **array of string paths**, not an object:
+```json
+"commands": [
+  "./.claude/commands/clarion-setup.md",
+  "./.claude/commands/clarion-search.md",
+  "./.claude/commands/clarion-status.md"
+]
+```
+
+According to the documentation, `commands` can be:
+- A single string path, OR
+- An array of string paths
+
+NOT an object with key-value pairs!
 
 ---
 
 ## What's New in v1.1.8
 
-### Slash Commands Now Work!
+### Slash Commands Registration (Wrong Format)
 
 **Problem in v1.1.7:**
 - Plugin loaded correctly (no validation errors)
 - But `/clarion-setup` gave "unknown slash command" error
 - Command files existed but weren't registered
 
-**Fixed in v1.1.8:**
-Added `commands` section to plugin.json:
-```json
-"commands": {
-  "clarion-setup": "./.claude/commands/clarion-setup.md",
-  "clarion-search": "./.claude/commands/clarion-search.md",
-  "clarion-status": "./.claude/commands/clarion-status.md"
-}
-```
-
-Now users can run:
-- `/clarion-setup` - Run Docker setup after installation
-- `/clarion-search [query]` - Search documentation
-- `/clarion-status` - Check container status
+**Attempted Fix in v1.1.8:**
+Added `commands` section but used wrong format (object instead of array)
 
 ---
 
@@ -150,7 +171,8 @@ When a user installs the plugin:
 
 | Version | Status | Issue/Fix |
 |---------|--------|-------|
-| **v1.1.8** | ✅ **Current** | WORKING! Added commands section to register slash commands |
+| **v1.1.9** | ✅ **Current** | WORKING! Fixed commands schema - array format not object |
+| v1.1.8 | ❌ Broken | Commands validation error - used object format instead of array |
 | v1.1.7 | ⚠️ Partial | Plugin loads, but slash commands not registered in plugin.json |
 | v1.1.6 | ❌ Broken | PostInstall hook doesn't exist in Claude Code (only PreToolUse, PostToolUse, etc.) |
 | v1.1.5 | ❌ Broken | Hook schema error: "postInstall" lowercase, object format instead of string |
@@ -178,6 +200,7 @@ When a user installs the plugin:
 - `source` must be `"./"` not `"."`
 - `hooks` cannot be in marketplace.json
 - **PostInstall hooks DO NOT EXIST** - Claude Code only supports: UserPromptSubmit, PreToolUse, PostToolUse, Stop, SubagentStop, Notification
+- **`commands` must be array or string** - NOT an object with key-value pairs
 - Don't use hooks for installation - use slash commands instead
 - `strict: true` tells Claude Code to look for plugin.json
 
@@ -191,10 +214,11 @@ When a user installs the plugin:
 - ❌ **v1.1.5:** Hook schema error ("postInstall" lowercase, object format invalid)
 - ❌ **v1.1.6:** PostInstall hook doesn't exist (Claude Code doesn't support it)
 - ✅ **v1.1.7:** Plugin loaded without validation errors! (But slash commands not working)
+- ❌ **v1.1.8:** Commands validation error (object format instead of array)
 
-### What Needs Testing (v1.1.8)
-1. ⏳ Add marketplace: `/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git`
-2. ⏳ Install plugin: `/plugin install clarion-knowledge-base` (should work!)
+### What Needs Testing (v1.1.9)
+1. ⏳ Update marketplace: `/plugin marketplace update clarion-knowledge-base-marketplace`
+2. ⏳ Install plugin: `/plugin install clarion-knowledge-base` (should work without errors!)
 3. ⏳ Verify slash commands work: `/clarion-setup` (should not say "unknown command")
 4. ⏳ Run Docker setup (downloads 76MB, builds containers)
 5. ⏳ Restart Claude Code
