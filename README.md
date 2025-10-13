@@ -35,7 +35,7 @@ Instantly search across 21 Clarion documentation manuals using natural language 
 
 ---
 
-## Quick Install (30 Seconds)
+## Quick Install (2 Minutes)
 
 **The easiest way to install is using the Claude Code plugin system:**
 
@@ -45,17 +45,20 @@ Instantly search across 21 Clarion documentation manuals using natural language 
 
 # Step 2: Install the plugin
 /plugin install clarion-knowledge-base
-```
 
-That's it! The plugin will automatically:
-- Download and configure Docker containers
-- Set up the Qdrant vector database (~76 MB)
-- Configure your Claude Code environment
-- Verify everything is working
+# Step 3: Run the setup command (this downloads and configures everything)
+/clarion-setup
+```
 
 **Requirements:** Docker Desktop must be installed and running.
 
-After installation, restart Claude Code and you can use slash commands like `/clarion-search` or simply ask Claude questions about Clarion programming!
+The setup command will:
+- Download and configure Docker containers
+- Set up the Qdrant vector database (~76 MB)
+- Import 21,747 documentation chunks
+- Verify everything is working
+
+After setup completes, **restart Claude Code** and you can use slash commands like `/clarion-search` or simply ask Claude questions about Clarion programming!
 
 ---
 

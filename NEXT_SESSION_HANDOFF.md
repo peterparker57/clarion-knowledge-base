@@ -1,61 +1,63 @@
 # Session Handoff - Clarion Knowledge Base Plugin
 
-**Date:** October 12, 2025
-**Current Version:** v1.1.6
-**Status:** Schema fixed + cross-platform support added
+**Date:** October 13, 2025
+**Current Version:** v1.1.7
+**Status:** WORKING - PostInstall hooks removed (not supported), manual setup via /clarion-setup
 
 ---
 
 ## Current Status
 
-The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. The latest version (v1.1.6) fixes the hook schema validation error and adds cross-platform installation support.
+The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. Version v1.1.7 removes the unsupported PostInstall hook and uses a manual setup command instead.
 
 ### Latest Release
-- **Version:** v1.1.6
-- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.6 (pending)
+- **Version:** v1.1.7
+- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.7 (pending)
 - **Repository:** https://github.com/peterparker57/clarion-knowledge-base (PUBLIC)
-- **Status:** Hook schema fixed, cross-platform support added (Windows/Mac/Linux)
+- **Status:** WORKING - Hooks removed, manual setup via /clarion-setup command
 
 ---
 
-## What's New in v1.1.6
+## What's New in v1.1.7
 
-### Hook Schema Fix
-**Problem in v1.1.5:**
-```json
-"hooks": {
-  "postInstall": {
-    "command": "bash",
-    "args": ["scripts/plugin-install.sh"]
-  }
-}
+### Critical Discovery: PostInstall Hooks Don't Exist!
+
+After extensive testing and documentation research, we discovered that **Claude Code plugins do NOT support PostInstall hooks**.
+
+**Supported hook types only:**
+- UserPromptSubmit
+- PreToolUse
+- PostToolUse
+- Stop
+- SubagentStop
+- Notification
+
+`PostInstall` is NOT a valid hook type, which is why validation kept failing!
+
+### The Fix: Manual Setup via Slash Command
+
+**v1.1.7 Changes:**
+- ✅ Removed `hooks` section entirely from plugin.json (not supported)
+- ✅ Updated `/clarion-setup` command description for first-time installation
+- ✅ Updated README with 3-step install process
+
+**New Installation Flow:**
+```bash
+# Step 1: Add marketplace
+/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git
+
+# Step 2: Install plugin
+/plugin install clarion-knowledge-base
+
+# Step 3: Run setup (manually)
+/clarion-setup
 ```
 
-**Fixed in v1.1.6:**
-```json
-"hooks": {
-  "PostInstall": "./scripts/plugin-install.js"
-}
-```
-
-**Changes:**
-- ✅ Capitalized hook key: `PostInstall` (was `postInstall`)
-- ✅ Simple string path format (was object with command/args)
-- ✅ Points to cross-platform Node.js wrapper
-
-### Cross-Platform Installation Support
-Created three installation scripts:
-1. **`scripts/plugin-install.js`** - Node.js wrapper (cross-platform, used by hook)
-   - Detects Windows vs Mac/Linux
-   - Automatically runs the correct script
-2. **`scripts/plugin-install.ps1`** - PowerShell version (Windows native)
-   - Full-featured installation script
-   - Uses PowerShell built-in to Windows
-3. **`scripts/plugin-install.sh`** - Bash version (Mac/Linux, existing)
-   - Original bash script maintained
-4. **`scripts/plugin-install.cmd`** - Batch wrapper (Windows alternative)
-   - Calls PowerShell script
-   - Fallback option
+**Why this works:**
+- No schema validation errors (hooks removed)
+- User has control over when Docker downloads happen
+- More transparent installation process
+- Slash command already existed, just updated docs
 
 ---
 
@@ -122,7 +124,8 @@ When a user installs the plugin:
 
 | Version | Status | Issue/Fix |
 |---------|--------|-------|
-| **v1.1.6** | ✅ **Current** | Fixed hook schema: "PostInstall" (capitalized), simple path format, cross-platform support |
+| **v1.1.7** | ✅ **Current** | WORKING! Removed hooks (PostInstall doesn't exist), manual setup via /clarion-setup |
+| v1.1.6 | ❌ Broken | PostInstall hook doesn't exist in Claude Code (only PreToolUse, PostToolUse, etc.) |
 | v1.1.5 | ❌ Broken | Hook schema error: "postInstall" lowercase, object format instead of string |
 | v1.1.4 | ❌ Broken | Schema errors: hooks in marketplace.json, source "." |
 | v1.1.3 | ❌ Broken | SSH authentication error (shorthand format) |
@@ -147,8 +150,8 @@ When a user installs the plugin:
 ### 3. Schema Requirements
 - `source` must be `"./"` not `"."`
 - `hooks` cannot be in marketplace.json
-- `hooks` keys must be capitalized: `"PostInstall"` not `"postInstall"`
-- `hooks` values must be simple string paths, NOT objects with `command`/`args`
+- **PostInstall hooks DO NOT EXIST** - Claude Code only supports: UserPromptSubmit, PreToolUse, PostToolUse, Stop, SubagentStop, Notification
+- Don't use hooks for installation - use slash commands instead
 - `strict: true` tells Claude Code to look for plugin.json
 
 ---
@@ -159,13 +162,16 @@ When a user installs the plugin:
 - ❌ **v1.1.3:** SSH authentication failed (shorthand format)
 - ❌ **v1.1.4:** Schema validation errors (hooks in marketplace.json, source ".")
 - ❌ **v1.1.5:** Hook schema error ("postInstall" lowercase, object format invalid)
+- ❌ **v1.1.6:** PostInstall hook doesn't exist (Claude Code doesn't support it)
 
-### What Needs Testing (v1.1.6)
-1. ✅ Add marketplace: `/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git`
-2. ⏳ Install plugin on clean Windows machine: `/plugin install clarion-knowledge-base`
-3. ⏳ Verify MCP server loads correctly after installation
-4. ⏳ Test on Mac/Linux (if possible)
-5. ⏳ **DO NOT INSTALL ON DEV MACHINE** (will conflict with existing Docker setup)
+### What Needs Testing (v1.1.7)
+1. ⏳ Add marketplace: `/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git`
+2. ⏳ Install plugin: `/plugin install clarion-knowledge-base` (should work without errors!)
+3. ⏳ Run setup: `/clarion-setup` (downloads and configures Docker)
+4. ⏳ Restart Claude Code
+5. ⏳ Test MCP tool: Ask "How do I create a browse procedure in Clarion?"
+6. ⏳ Test on Mac/Linux (if possible)
+7. ⏳ **DO NOT INSTALL ON DEV MACHINE** (will conflict with existing Docker setup)
 
 ### Recommended Testing Approach
 User should test marketplace registration (steps 1-3 above) on their dev machine to verify the schema is valid. Full installation should be tested on a clean machine or by an end user.
@@ -256,9 +262,9 @@ docker exec -i clarion-mcp-server python /app/src/mcp_server.py
 - **Cause:** `source` was `"."` instead of `"./"`
 - **Fix:** v1.1.5 fixed this - source is now `"./"`
 
-### "hooks: Invalid input" (v1.1.5 error)
-- **Cause:** Hook key was lowercase `postInstall` instead of `PostInstall`, and value was object instead of string
-- **Fix:** v1.1.6 fixed this - uses `"PostInstall"` with simple path string
+### "hooks: Invalid input" (v1.1.5-v1.1.6 error)
+- **Cause:** PostInstall hooks don't exist in Claude Code! Only these hooks are supported: UserPromptSubmit, PreToolUse, PostToolUse, Stop, SubagentStop, Notification
+- **Fix:** v1.1.7 removed hooks entirely - users run `/clarion-setup` manually after installation
 
 ### "Docker is not running"
 - **Cause:** User doesn't have Docker Desktop running
@@ -276,13 +282,14 @@ docker exec -i clarion-mcp-server python /app/src/mcp_server.py
 
 ## Key Takeaways for Next Session
 
-1. **v1.1.6 should work** - fixed hook schema validation and added cross-platform support
-2. **Hook schema is finicky** - must use capitalized `PostInstall` with simple string path
-3. **Test on clean Windows machine** - the real test environment for end users
-4. **Cross-platform is critical** - Node.js wrapper ensures Windows/Mac/Linux compatibility
+1. **v1.1.7 SHOULD FINALLY WORK** - PostInstall hooks don't exist, removed them entirely
+2. **PostInstall is NOT a valid hook type** - Only: UserPromptSubmit, PreToolUse, PostToolUse, Stop, SubagentStop, Notification
+3. **Manual setup is the solution** - Users run `/clarion-setup` after installing plugin
+4. **Test on clean Windows machine** - the real test environment for end users
 5. **Don't install on dev machine** - will conflict with existing Docker setup
 6. **HTTPS URL is correct** - don't second-guess this again
 7. **Two-file structure is required** - marketplace.json + plugin.json with strict: true
+8. **Installation scripts are still useful** - `/clarion-setup` runs the appropriate script for each platform
 
 ---
 
