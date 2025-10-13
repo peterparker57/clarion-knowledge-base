@@ -1,6 +1,6 @@
 {
   "name": "clarion-knowledge-base",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
   "author": {
     "name": "peterparker57"
@@ -9,6 +9,12 @@
   "homepage": "https://github.com/peterparker57/clarion-knowledge-base",
   "license": "MIT",
   "tags": ["clarion", "documentation", "search", "mcp", "qdrant"],
+
+  "commands": {
+    "clarion-setup": "./.claude/commands/clarion-setup.md",
+    "clarion-search": "./.claude/commands/clarion-search.md",
+    "clarion-status": "./.claude/commands/clarion-status.md"
+  },
 
   "mcpServers": {
     "clarion-knowledge-base": {
