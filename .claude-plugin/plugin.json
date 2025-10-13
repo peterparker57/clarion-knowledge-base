@@ -1,6 +1,6 @@
 {
   "name": "clarion-knowledge-base",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
   "author": {
     "name": "peterparker57"
@@ -19,10 +19,7 @@
   },
 
   "hooks": {
-    "postInstall": {
-      "command": "bash",
-      "args": ["scripts/plugin-install.sh"]
-    }
+    "PostInstall": "./scripts/plugin-install.js"
   },
 
   "requirements": {

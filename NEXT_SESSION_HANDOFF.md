@@ -1,20 +1,61 @@
 # Session Handoff - Clarion Knowledge Base Plugin
 
 **Date:** October 12, 2025
-**Current Version:** v1.1.5
-**Status:** Ready for testing - Schema validation errors fixed
+**Current Version:** v1.1.6
+**Status:** Schema fixed + cross-platform support added
 
 ---
 
 ## Current Status
 
-The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. The latest version (v1.1.5) should now work correctly with the proper two-file plugin structure.
+The Clarion Knowledge Base MCP server has been successfully converted to a Claude Code plugin. The latest version (v1.1.6) fixes the hook schema validation error and adds cross-platform installation support.
 
 ### Latest Release
-- **Version:** v1.1.5
-- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.5
+- **Version:** v1.1.6
+- **Release URL:** https://github.com/peterparker57/clarion-knowledge-base/releases/tag/v1.1.6 (pending)
 - **Repository:** https://github.com/peterparker57/clarion-knowledge-base (PUBLIC)
-- **Status:** Plugin structure is correct, ready for end-user testing
+- **Status:** Hook schema fixed, cross-platform support added (Windows/Mac/Linux)
+
+---
+
+## What's New in v1.1.6
+
+### Hook Schema Fix
+**Problem in v1.1.5:**
+```json
+"hooks": {
+  "postInstall": {
+    "command": "bash",
+    "args": ["scripts/plugin-install.sh"]
+  }
+}
+```
+
+**Fixed in v1.1.6:**
+```json
+"hooks": {
+  "PostInstall": "./scripts/plugin-install.js"
+}
+```
+
+**Changes:**
+- ✅ Capitalized hook key: `PostInstall` (was `postInstall`)
+- ✅ Simple string path format (was object with command/args)
+- ✅ Points to cross-platform Node.js wrapper
+
+### Cross-Platform Installation Support
+Created three installation scripts:
+1. **`scripts/plugin-install.js`** - Node.js wrapper (cross-platform, used by hook)
+   - Detects Windows vs Mac/Linux
+   - Automatically runs the correct script
+2. **`scripts/plugin-install.ps1`** - PowerShell version (Windows native)
+   - Full-featured installation script
+   - Uses PowerShell built-in to Windows
+3. **`scripts/plugin-install.sh`** - Bash version (Mac/Linux, existing)
+   - Original bash script maintained
+4. **`scripts/plugin-install.cmd`** - Batch wrapper (Windows alternative)
+   - Calls PowerShell script
+   - Fallback option
 
 ---
 
@@ -79,9 +120,10 @@ When a user installs the plugin:
 
 ## Version History (Learning from Mistakes)
 
-| Version | Status | Issue |
+| Version | Status | Issue/Fix |
 |---------|--------|-------|
-| **v1.1.5** | ✅ **Current** | Fixed schema validation - proper two-file structure |
+| **v1.1.6** | ✅ **Current** | Fixed hook schema: "PostInstall" (capitalized), simple path format, cross-platform support |
+| v1.1.5 | ❌ Broken | Hook schema error: "postInstall" lowercase, object format instead of string |
 | v1.1.4 | ❌ Broken | Schema errors: hooks in marketplace.json, source "." |
 | v1.1.3 | ❌ Broken | SSH authentication error (shorthand format) |
 | v1.1.2 | ❌ Broken | HTTPS URL but wrong file structure |
@@ -105,21 +147,25 @@ When a user installs the plugin:
 ### 3. Schema Requirements
 - `source` must be `"./"` not `"."`
 - `hooks` cannot be in marketplace.json
+- `hooks` keys must be capitalized: `"PostInstall"` not `"postInstall"`
+- `hooks` values must be simple string paths, NOT objects with `command`/`args`
 - `strict: true` tells Claude Code to look for plugin.json
 
 ---
 
 ## Testing Status
 
-### What User Has Tested (On Dev Machine)
+### What User Has Tested (On Clean Windows Machine)
 - ❌ **v1.1.3:** SSH authentication failed (shorthand format)
 - ❌ **v1.1.4:** Schema validation errors (hooks in marketplace.json, source ".")
+- ❌ **v1.1.5:** Hook schema error ("postInstall" lowercase, object format invalid)
 
-### What Needs Testing (v1.1.5)
+### What Needs Testing (v1.1.6)
 1. ✅ Add marketplace: `/plugin marketplace add https://github.com/peterparker57/clarion-knowledge-base.git`
-2. ⏳ List marketplace: `/plugin marketplace list`
-3. ⏳ List plugins: `/plugin list`
-4. ⏳ **DO NOT INSTALL ON DEV MACHINE** (will conflict with existing Docker setup)
+2. ⏳ Install plugin on clean Windows machine: `/plugin install clarion-knowledge-base`
+3. ⏳ Verify MCP server loads correctly after installation
+4. ⏳ Test on Mac/Linux (if possible)
+5. ⏳ **DO NOT INSTALL ON DEV MACHINE** (will conflict with existing Docker setup)
 
 ### Recommended Testing Approach
 User should test marketplace registration (steps 1-3 above) on their dev machine to verify the schema is valid. Full installation should be tested on a clean machine or by an end user.
@@ -210,6 +256,10 @@ docker exec -i clarion-mcp-server python /app/src/mcp_server.py
 - **Cause:** `source` was `"."` instead of `"./"`
 - **Fix:** v1.1.5 fixed this - source is now `"./"`
 
+### "hooks: Invalid input" (v1.1.5 error)
+- **Cause:** Hook key was lowercase `postInstall` instead of `PostInstall`, and value was object instead of string
+- **Fix:** v1.1.6 fixed this - uses `"PostInstall"` with simple path string
+
 ### "Docker is not running"
 - **Cause:** User doesn't have Docker Desktop running
 - **Fix:** Start Docker Desktop before plugin installation
@@ -226,11 +276,13 @@ docker exec -i clarion-mcp-server python /app/src/mcp_server.py
 
 ## Key Takeaways for Next Session
 
-1. **v1.1.5 should work** - correct two-file structure with proper schema
-2. **Test marketplace registration** - user can safely test adding marketplace
-3. **Don't install on dev machine** - will conflict with existing Docker setup
-4. **HTTPS URL is correct** - don't second-guess this again
-5. **Two-file structure is required** - marketplace.json + plugin.json with strict: true
+1. **v1.1.6 should work** - fixed hook schema validation and added cross-platform support
+2. **Hook schema is finicky** - must use capitalized `PostInstall` with simple string path
+3. **Test on clean Windows machine** - the real test environment for end users
+4. **Cross-platform is critical** - Node.js wrapper ensures Windows/Mac/Linux compatibility
+5. **Don't install on dev machine** - will conflict with existing Docker setup
+6. **HTTPS URL is correct** - don't second-guess this again
+7. **Two-file structure is required** - marketplace.json + plugin.json with strict: true
 
 ---
 
