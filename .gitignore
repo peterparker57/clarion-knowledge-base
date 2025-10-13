@@ -66,6 +66,7 @@ NEW_SESSION_PROMPT.md
 # MCP config (user-specific)
 mcp_config.json
 .claude/
+!.claude/commands/
 
 # Source PDFs (copyrighted, too large for distribution)
 Documents/

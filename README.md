@@ -2,6 +2,7 @@
 
 > **Semantic search for Clarion programming documentation via Claude AI**
 
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-blue)](https://github.com/peterparker57/clarion-knowledge-base)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Docker](https://img.shields.io/badge/docker-required-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.13+-blue.svg)
@@ -34,9 +35,29 @@ Instantly search across 21 Clarion documentation manuals using natural language 
 
 ---
 
-## Quick Start
+## Quick Install (30 Seconds)
 
-Get up and running in **3 simple steps** (approximately 5 minutes):
+**The easiest way to install is using the Claude Code plugin system:**
+
+```bash
+/plugin add peterparker57/clarion-knowledge-base
+```
+
+That's it! The plugin will automatically:
+- Download and configure Docker containers
+- Set up the Qdrant vector database (~76 MB)
+- Configure your Claude Code environment
+- Verify everything is working
+
+**Requirements:** Docker Desktop must be installed and running.
+
+After installation, you can use slash commands like `/clarion-search` or simply ask Claude questions about Clarion programming!
+
+---
+
+## Alternative: Manual Installation
+
+If you prefer manual installation or need more control, you can install via the installer scripts:
 
 ```bash
 # Step 1: Clone the repository
@@ -61,6 +82,8 @@ install.bat       # Windows
 
 **Note:** The installer will prompt you to choose Claude Code, Claude Desktop, or both.
 
+See [PLUGIN.md](PLUGIN.md) for detailed plugin documentation or [INSTALLATION.md](INSTALLATION.md) for manual installation details.
+
 ---
 
 ## Prerequisites
@@ -81,9 +104,13 @@ Before installation, ensure you have:
 
 ## Installation Details
 
+**Recommended:** Use the plugin installation method described above (`/plugin add peterparker57/clarion-knowledge-base`).
+
+The following sections are for manual configuration or troubleshooting.
+
 ### For Claude Code
 
-The installer automatically configures Claude Code, but if you need to configure manually:
+The installer (or plugin) automatically configures Claude Code, but if you need to configure manually:
 
 **Configuration File Locations:**
 - **Windows:** `%USERPROFILE%\.claude\claude_code_config.json`

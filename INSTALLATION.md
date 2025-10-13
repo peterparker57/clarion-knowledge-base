@@ -2,9 +2,55 @@
 
 This guide provides detailed instructions for installing the Clarion Knowledge Base MCP Server on your system.
 
-## Quick Start
+## Recommended: Plugin Installation
 
-### Prerequisites
+**The fastest and easiest way to install is using the Claude Code plugin system:**
+
+```bash
+/plugin add peterparker57/clarion-knowledge-base
+```
+
+**Installation time:** 30-60 seconds
+
+**What it does:**
+- Automatically downloads and configures Docker containers
+- Sets up the Qdrant vector database (~76 MB download)
+- Configures Claude Code environment
+- Installs slash commands (`/clarion-search`, `/clarion-status`, `/clarion-setup`)
+- Verifies everything is working
+
+**Prerequisites:**
+- Docker Desktop installed and running
+- Claude Code installed
+- 2GB free disk space
+- Internet connection (for initial download)
+
+**See [PLUGIN.md](PLUGIN.md) for comprehensive plugin documentation, troubleshooting, and advanced usage.**
+
+---
+
+## Alternative: Manual Installation
+
+If you prefer manual installation, need more control, or are setting up for Claude Desktop, follow the instructions below.
+
+### Plugin vs Manual Installation
+
+| Aspect | Plugin | Manual |
+|--------|--------|--------|
+| Installation Time | 30-60 seconds | 5-10 minutes |
+| Command | `/plugin add` | Clone + scripts |
+| Configuration | Automatic | Script-assisted or manual |
+| Best For | Most users | Advanced users, Claude Desktop |
+| Updates | `/plugin update` | Git pull + rebuild |
+| Removal | `/plugin remove` | Manual cleanup |
+
+---
+
+## Manual Installation: Quick Start
+
+**Note:** This section describes manual installation using the provided installer scripts. For automated plugin installation, see the "Recommended: Plugin Installation" section above.
+
+### Prerequisites for Manual Installation
 
 Before running the installation script, ensure you have:
 
@@ -21,7 +67,7 @@ Before running the installation script, ensure you have:
    - Get Claude Code: [Anthropic Claude Code](https://claude.ai/code)
    - Get Claude Desktop: [Anthropic Claude Desktop](https://claude.ai/download)
 
-### Installation Steps
+### Manual Installation Steps
 
 #### Linux & macOS
 
@@ -62,16 +108,16 @@ install.bat
 # - Claude Desktop: Quit and restart the app
 ```
 
-## What the Installer Does
+## What the Manual Installer Does
 
-The installation script performs the following steps automatically:
+The manual installation script (`install.sh` or `install.bat`) performs the following steps automatically:
 
 1. **Prerequisites Check**
    - Verifies Docker is installed and running
    - Checks for required tools (curl/wget, Python)
 
 2. **Download Snapshot**
-   - Downloads the pre-built Qdrant vector database (~600MB)
+   - Downloads the pre-built Qdrant vector database (~76 MB compressed, ~655 MB uncompressed)
    - Contains 21,747 vectors from 21 Clarion PDFs
 
 3. **Start Docker Containers**
@@ -92,6 +138,8 @@ The installation script performs the following steps automatically:
 6. **Verify Installation**
    - Tests MCP server connectivity
    - Provides next steps and usage instructions
+
+**Note:** The plugin installation (`/plugin add`) performs these same steps automatically in the background. See [PLUGIN.md](PLUGIN.md) for plugin-specific details.
 
 ## Configuration Paths
 
@@ -123,9 +171,9 @@ The installer adds this configuration to your Claude config file:
 }
 ```
 
-## Manual Installation
+## Fully Manual Installation (Advanced)
 
-If you prefer to install manually or encounter issues with the automated installer:
+If you prefer to install manually without using the installer scripts, or encounter issues with the automated installer:
 
 ### 1. Download Snapshot
 

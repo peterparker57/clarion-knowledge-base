@@ -1,0 +1,32 @@
+{
+  "name": "clarion-knowledge-base",
+  "version": "1.1.0",
+  "description": "Semantic search for Clarion programming documentation. MCP server with 21,747 indexed chunks from 21 Clarion PDFs.",
+  "author": "peterparker57",
+  "repository": "https://github.com/peterparker57/clarion-knowledge-base",
+  "homepage": "https://github.com/peterparker57/clarion-knowledge-base",
+  "license": "MIT",
+  "tags": ["clarion", "documentation", "search", "mcp", "qdrant"],
+
+  "mcpServers": {
+    "clarion-knowledge-base": {
+      "command": "docker",
+      "args": ["exec", "-i", "clarion-mcp-server", "python", "/app/src/mcp_server.py"],
+      "description": "Semantic search across Clarion programming documentation"
+    }
+  },
+
+  "hooks": {
+    "postInstall": {
+      "command": "bash",
+      "args": ["scripts/plugin-install.sh"]
+    }
+  },
+
+  "requirements": {
+    "docker": {
+      "required": true,
+      "message": "Docker Desktop must be installed and running. Download from: https://www.docker.com/products/docker-desktop"
+    }
+  }
+}
