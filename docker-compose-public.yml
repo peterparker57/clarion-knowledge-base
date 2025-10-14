@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: clarion-qdrant
+    ports:
+      - "6333:6333"  # REST API
+      - "6334:6334"  # gRPC API
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - clarion-network
+
+  # Clarion Knowledge Base Web App
+  web-app:
+    image: clarionlive/clarion-knowledge-base-webapp:latest
+    container_name: clarion-web-app
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    ports:
+      - "${CLARION_PORT:-8080}:8080"  # Web interface (customizable via CLARION_PORT env var)
+    environment:
+      # Qdrant connection
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - COLLECTION_NAME=clarion_docs
+      # Encryption key for API key storage (DO NOT CHANGE after first use!)
+      - ENCRYPTION_KEY=yFf7iOiJAhMwF6XO6iRCFkPOLRZnzknWcwdQmSGumpY=
+      # Optional: Pre-configure API keys via environment variables
+      # - DEEPSEEK_API_KEY=sk-your-key-here
+      # - OPENAI_API_KEY=sk-your-key-here
+      # - ANTHROPIC_API_KEY=sk-your-key-here
+      # - GEMINI_API_KEY=your-key-here
+      # - GROK_API_KEY=your-key-here
+    volumes:
+      - api_keys:/app/.secrets  # Encrypted API key storage
+    networks:
+      - clarion-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s  # Allow time for embedding model to load
+
+networks:
+  clarion-network:
+    driver: bridge
+
+volumes:
+  qdrant_storage:
+    driver: local
+  api_keys:
+    driver: local
