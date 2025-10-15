@@ -14,6 +14,9 @@ from contextlib import asynccontextmanager
 import os
 import json
 import time
+import tarfile
+import shutil
+import requests
 from abc import ABC, abstractmethod
 from cryptography.fernet import Fernet
 from pathlib import Path
@@ -1276,6 +1279,58 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.error(f"Failed to initialize vector store: {e}")
         raise
+
+    # Check if collection exists, if not restore from snapshot
+    try:
+        if not vector_store.collection_exists():
+            logger.info("Collection 'clarion_docs' not found. Attempting to restore from snapshot...")
+            snapshot_path = Path("/app/qdrant-snapshot.tar.gz")
+
+            if snapshot_path.exists():
+                logger.info(f"Found snapshot file: {snapshot_path}")
+
+                # Extract snapshot
+                temp_dir = Path("/tmp/qdrant_snapshot")
+                temp_dir.mkdir(exist_ok=True)
+
+                logger.info("Extracting snapshot...")
+                with tarfile.open(snapshot_path, "r:gz") as tar:
+                    tar.extractall(temp_dir)
+
+                # Find .snapshot file
+                snapshot_files = list(temp_dir.glob("*.snapshot"))
+                if snapshot_files:
+                    snapshot_file = snapshot_files[0]
+                    logger.info(f"Uploading snapshot to Qdrant...")
+
+                    # Upload snapshot to Qdrant
+                    qdrant_host = os.getenv("QDRANT_HOST", "qdrant")
+                    qdrant_port = os.getenv("QDRANT_PORT", "6333")
+
+                    with open(snapshot_file, 'rb') as f:
+                        response = requests.post(
+                            f"http://{qdrant_host}:{qdrant_port}/collections/clarion_docs/snapshots/upload",
+                            files={'snapshot': f},
+                            timeout=300
+                        )
+                        response.raise_for_status()
+
+                    logger.info("Snapshot uploaded successfully!")
+                    logger.info(f"Collection 'clarion_docs' is now available with 21,747 documentation chunks")
+
+                    # Cleanup temp files
+                    shutil.rmtree(temp_dir, ignore_errors=True)
+                else:
+                    logger.error("No .snapshot file found in archive")
+            else:
+                logger.warning(f"Snapshot file not found at {snapshot_path}")
+        else:
+            info = vector_store.get_collection_info()
+            points_count = info.get('points_count', 0) if info else 0
+            logger.info(f"Collection 'clarion_docs' exists with {points_count:,} points")
+    except Exception as e:
+        logger.error(f"Error checking/restoring collection: {e}")
+        # Don't raise - allow app to start even if restore fails
 
     # Initialize embedding model (lazy load - will load on first use)
     try:
