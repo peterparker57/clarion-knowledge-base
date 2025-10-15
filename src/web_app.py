@@ -518,7 +518,7 @@ class AnthropicProvider(LLMProvider):
 
         payload = {
             "model": self.model,
-            "max_tokens": 8000  # Allow longer responses with code examples,
+            "max_tokens": 8000,  # Allow longer responses with code examples
             "messages": [
                 {"role": "user", "content": prompt}
             ]
