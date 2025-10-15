@@ -107,7 +107,7 @@ class DeepseekProvider(LLMProvider):
                 f"{self.base_url}/chat/completions",
                 headers=headers,
                 json=payload,
-                timeout=120  # Increased timeout for complex queries
+                timeout=300  # 5 minutes for complex documentation queries
             )
             response.raise_for_status()
             data = response.json()
@@ -130,10 +130,10 @@ class DeepseekProvider(LLMProvider):
             }
 
         except requests.exceptions.Timeout:
-            logger.error("Deepseek API timeout - request took longer than 120 seconds")
+            logger.error("Deepseek API timeout - request took longer than 5 minutes")
             raise HTTPException(
                 status_code=504,
-                detail="The AI provider took too long to respond. This can happen with complex queries. Please try again or use a shorter question."
+                detail="Query timed out after 5 minutes. Try using 'Chat' mode (faster, no doc search) or ask a more specific question."
             )
         except requests.exceptions.RequestException as e:
             logger.error(f"Deepseek API error: {e}")
@@ -238,7 +238,7 @@ class OllamaProvider(LLMProvider):
             response = requests.post(
                 f"{self.base_url}/api/generate",
                 json=payload,
-                timeout=60
+                timeout=300  # 5 minutes for local models
             )
             response.raise_for_status()
             data = response.json()
@@ -256,10 +256,10 @@ class OllamaProvider(LLMProvider):
             }
 
         except requests.exceptions.Timeout:
-            logger.error("Ollama API timeout - request took longer than 60 seconds")
+            logger.error("Ollama API timeout - request took longer than 5 minutes")
             raise HTTPException(
                 status_code=504,
-                detail="Ollama took too long to respond. This can happen with large models or complex queries. Please try again or use a smaller model."
+                detail="Ollama timed out after 5 minutes. Try using 'Chat' mode (faster) or a smaller/faster model."
             )
         except requests.exceptions.RequestException as e:
             logger.error(f"Ollama API error: {e}")
@@ -375,7 +375,7 @@ class OpenAIProvider(LLMProvider):
                 f"{self.base_url}/chat/completions",
                 headers=headers,
                 json=payload,
-                timeout=120
+                timeout=300  # 5 minutes for complex documentation queries
             )
             response.raise_for_status()
             data = response.json()
@@ -421,8 +421,8 @@ class OpenAIProvider(LLMProvider):
             }
 
         except requests.exceptions.Timeout:
-            logger.error("OpenAI API timeout")
-            raise HTTPException(status_code=504, detail="OpenAI took too long to respond.")
+            logger.error("OpenAI API timeout - request took longer than 5 minutes")
+            raise HTTPException(status_code=504, detail="OpenAI timed out after 5 minutes. Try using 'Chat' mode (faster) or ask a more specific question.")
         except requests.exceptions.RequestException as e:
             logger.error(f"OpenAI API error: {e}")
             raise HTTPException(status_code=503, detail=f"OpenAI error: {str(e)}")
@@ -529,7 +529,7 @@ class AnthropicProvider(LLMProvider):
                 f"{self.base_url}/messages",
                 headers=headers,
                 json=payload,
-                timeout=120
+                timeout=300  # 5 minutes for complex documentation queries
             )
             response.raise_for_status()
             data = response.json()
@@ -568,8 +568,8 @@ class AnthropicProvider(LLMProvider):
             }
 
         except requests.exceptions.Timeout:
-            logger.error("Anthropic API timeout")
-            raise HTTPException(status_code=504, detail="Anthropic took too long to respond.")
+            logger.error("Anthropic API timeout - request took longer than 5 minutes")
+            raise HTTPException(status_code=504, detail="Anthropic timed out after 5 minutes. Try using 'Chat' mode (faster) or ask a more specific question.")
         except requests.exceptions.RequestException as e:
             logger.error(f"Anthropic API error: {e}")
             raise HTTPException(status_code=503, detail=f"Anthropic error: {str(e)}")
@@ -671,7 +671,7 @@ class GeminiProvider(LLMProvider):
             response = requests.post(
                 f"{self.base_url}/models/{self.model}:generateContent?key={self.api_key}",
                 json=payload,
-                timeout=120
+                timeout=300  # 5 minutes for complex documentation queries
             )
             response.raise_for_status()
             data = response.json()
@@ -709,8 +709,8 @@ class GeminiProvider(LLMProvider):
             }
 
         except requests.exceptions.Timeout:
-            logger.error("Gemini API timeout")
-            raise HTTPException(status_code=504, detail="Gemini took too long to respond.")
+            logger.error("Gemini API timeout - request took longer than 5 minutes")
+            raise HTTPException(status_code=504, detail="Gemini timed out after 5 minutes. Try using 'Chat' mode (faster) or ask a more specific question.")
         except requests.exceptions.RequestException as e:
             logger.error(f"Gemini API error: {e}")
             raise HTTPException(status_code=503, detail=f"Gemini error: {str(e)}")
@@ -818,7 +818,7 @@ class GrokProvider(LLMProvider):
                 f"{self.base_url}/chat/completions",
                 headers=headers,
                 json=payload,
-                timeout=120
+                timeout=300  # 5 minutes for complex documentation queries
             )
             response.raise_for_status()
             data = response.json()
@@ -848,8 +848,8 @@ class GrokProvider(LLMProvider):
             }
 
         except requests.exceptions.Timeout:
-            logger.error("Grok API timeout")
-            raise HTTPException(status_code=504, detail="Grok took too long to respond.")
+            logger.error("Grok API timeout - request took longer than 5 minutes")
+            raise HTTPException(status_code=504, detail="Grok timed out after 5 minutes. Try using 'Chat' mode (faster) or ask a more specific question.")
         except requests.exceptions.RequestException as e:
             logger.error(f"Grok API error: {e}")
             raise HTTPException(status_code=503, detail=f"Grok error: {str(e)}")
