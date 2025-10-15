@@ -1634,10 +1634,11 @@ async def configure_provider(request: ConfigureRequest):
     provider_id = request.provider.lower()
 
     # Validate provider
-    if provider_id not in ["deepseek", "ollama"]:
+    valid_providers = ["deepseek", "openai", "anthropic", "gemini", "grok", "ollama"]
+    if provider_id not in valid_providers:
         raise HTTPException(
             status_code=400,
-            detail=f"Unknown provider: {provider_id}. Available: deepseek, ollama"
+            detail=f"Unknown provider: {provider_id}. Available: {', '.join(valid_providers)}"
         )
 
     # Ollama doesn't require API key
@@ -1655,11 +1656,11 @@ async def configure_provider(request: ConfigureRequest):
         )
 
     # Validate API key format (basic check)
-    if provider_id == "deepseek":
+    if provider_id in ["deepseek", "openai", "anthropic"]:
         if not request.api_key.startswith("sk-"):
             raise HTTPException(
                 status_code=400,
-                detail="Invalid Deepseek API key format (should start with 'sk-')"
+                detail=f"Invalid {provider_id.title()} API key format (should start with 'sk-')"
             )
 
     try:
