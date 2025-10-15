@@ -99,7 +99,7 @@ class DeepseekProvider(LLMProvider):
                 {"role": "user", "content": prompt}
             ],
             "temperature": 0.3,
-            "max_tokens": 2000
+            "max_tokens": 8000  # Allow longer responses with code examples
         }
 
         try:
@@ -367,7 +367,7 @@ class OpenAIProvider(LLMProvider):
                 {"role": "user", "content": prompt}
             ],
             "temperature": 0.3,
-            "max_tokens": 2000
+            "max_tokens": 8000  # Allow longer responses with code examples
         }
 
         try:
@@ -518,7 +518,7 @@ class AnthropicProvider(LLMProvider):
 
         payload = {
             "model": self.model,
-            "max_tokens": 2000,
+            "max_tokens": 8000  # Allow longer responses with code examples,
             "messages": [
                 {"role": "user", "content": prompt}
             ]
@@ -663,7 +663,7 @@ class GeminiProvider(LLMProvider):
             ],
             "generationConfig": {
                 "temperature": 0.3,
-                "maxOutputTokens": 2000
+                "maxOutputTokens": 8000  # Allow longer responses with code examples
             }
         }
 
@@ -810,7 +810,7 @@ class GrokProvider(LLMProvider):
                 {"role": "user", "content": prompt}
             ],
             "temperature": 0.3,
-            "max_tokens": 2000
+            "max_tokens": 8000  # Allow longer responses with code examples
         }
 
         try:
