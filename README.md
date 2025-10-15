@@ -108,9 +108,12 @@ ports:
 
 #### First Startup Time
 
-**⚠️ Important:** On first startup, services may take 60-90 seconds to become healthy while:
-- Qdrant restores the 21,747 documentation chunks from snapshot
+**⚠️ Important:** On first startup, services may take 2-3 minutes to become healthy while:
+- Qdrant restores the 21,747 documentation chunks from snapshot (~90 seconds)
 - Web app loads the sentence transformer embedding model (~80MB)
+- Docker performs health checks to ensure services are ready
+
+**Be patient!** The containers will start automatically once Qdrant is healthy.
 
 Check startup progress:
 ```bash

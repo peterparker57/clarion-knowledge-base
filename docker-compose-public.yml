@@ -17,8 +17,8 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 60s  # Allow time for snapshot restore (21,747 chunks)
+      retries: 10  # More retries to handle slower systems
+      start_period: 120s  # Allow time for snapshot restore and initialization (21,747 chunks)
     restart: unless-stopped
     networks:
       - clarion-network
