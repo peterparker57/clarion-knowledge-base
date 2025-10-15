@@ -1,0 +1,32 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Copy requirements
+COPY requirements-webapp.txt ./
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements-webapp.txt
+
+# Copy source code
+COPY src/ ./src/
+COPY static/ ./static/
+
+# Copy Qdrant snapshot for standalone deployment
+COPY qdrant-snapshot.tar.gz ./qdrant-snapshot.tar.gz
+
+# Add src to PYTHONPATH so imports work
+ENV PYTHONPATH=/app/src:$PYTHONPATH
+
+# Create secrets directory for API key storage
+RUN mkdir -p .secrets && chmod 700 .secrets
+
+# Expose port
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')" || exit 1
+
+# Run web server
+CMD ["uvicorn", "src.web_app:app", "--host", "0.0.0.0", "--port", "8080"]

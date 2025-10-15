@@ -1,0 +1,37 @@
+# Minimal requirements for web app (excludes MCP server dependencies)
+
+# Core web framework
+fastapi==0.115.0
+uvicorn[standard]==0.37.0
+python-multipart==0.0.20
+
+# Security
+cryptography==44.0.0
+
+# HTTP client for LLM APIs
+requests==2.32.5
+
+# Qdrant client
+qdrant-client==1.15.1
+grpcio==1.75.1
+
+# Embeddings (sentence transformers)
+sentence-transformers==5.1.1
+torch==2.8.0
+transformers==4.57.0
+tokenizers==0.22.1
+safetensors==0.6.2
+huggingface-hub==0.35.3
+
+# ML/Data processing
+numpy==2.3.3
+scikit-learn==1.7.2
+scipy==1.16.2
+
+# PDF processing
+PyMuPDF==1.26.5
+
+# Utilities
+python-dotenv==1.1.1
+pydantic==2.12.0
+pydantic_core==2.41.1

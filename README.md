@@ -62,7 +62,89 @@ After setup completes, **restart Claude Code** and you can use slash commands li
 
 ---
 
-## Alternative: Manual Installation
+## NEW: Standalone Web App (No Claude Required!)
+
+**Want to use the Clarion Knowledge Base without Claude?** Use our standalone web application with your own LLM provider (DeepSeek, OpenAI, Claude, Gemini, Grok, or FREE local Ollama).
+
+### Quick Start (Pre-Built Docker Image):
+
+```bash
+# Create and enter a folder for Clarion KB
+mkdir ~/clarion-kb
+cd ~/clarion-kb
+
+# Download deployment file
+curl -O https://raw.githubusercontent.com/peterparker57/clarion-knowledge-base/main/docker-compose-public.yml
+
+# Start the app (first time downloads ~12GB)
+docker-compose -f docker-compose-public.yml up -d
+
+# Open browser
+open http://localhost:8080
+```
+
+**That's it!** No building, no Git clone - just pull and run from Docker Hub.
+
+**Important:** Run all commands in the same folder (the `clarion-kb` folder you created).
+
+#### Custom Port Configuration
+
+Port 8080 already in use? No problem!
+
+**Option 1: Environment Variable** (easiest)
+```bash
+CLARION_WEB_PORT=8081 docker-compose -f docker-compose-public.yml up -d
+# Access at http://localhost:8081
+```
+
+**Option 2: Edit the File**
+Edit `docker-compose-public.yml` and change:
+```yaml
+ports:
+  - "8080:8080"  # Change first number: "8081:8080"
+```
+
+**Common alternative ports:** 8081, 8082, 3000, 5000, 9090
+
+#### First Startup Time
+
+**⚠️ Important:** On first startup, services may take 60-90 seconds to become healthy while:
+- Qdrant restores the 21,747 documentation chunks from snapshot
+- Web app loads the sentence transformer embedding model (~80MB)
+
+Check startup progress:
+```bash
+docker-compose -f docker-compose-public.yml logs -f
+```
+
+Wait for: `"Uvicorn running on http://0.0.0.0:8080"` before accessing the web interface.
+
+### Features:
+- 🌐 **Browser-Based Interface** - Access from any device
+- 🔑 **Multiple LLM Providers**: DeepSeek ($0.35/1M), OpenAI, Claude, Gemini, Grok, or Ollama (FREE)
+- 💰 **Real-Time Pricing** - See cost per model before you query
+- 📊 **3 Query Modes**: Augmented (docs + AI), Strict (docs only), Chat (AI only - fast)
+- 📱 **Mobile Friendly** - Works on phones/tablets
+- 📚 **Same Data**: 21,747 documentation chunks as MCP mode
+- 🎯 **Source Citations** - Every answer includes document sources
+
+### When to Use Each Mode:
+
+| Feature | MCP Mode | Web App |
+|---------|----------|---------|
+| Best for | Claude Code/Desktop users | Everyone |
+| LLM | Claude (Anthropic) | Any provider (your choice) |
+| Interface | Claude chat | Web browser |
+| Cost | Claude subscription | Pay-per-use or FREE (Ollama) |
+| Mobile | ❌ No | ✅ Yes |
+
+**📖 Full Documentation:** See [README-WEBAPP.md](README-WEBAPP.md) for complete instructions, LLM provider setup, and troubleshooting.
+
+**🐳 Docker Hub:** [clarionlive/clarion-knowledge-base-webapp](https://hub.docker.com/r/clarionlive/clarion-knowledge-base-webapp)
+
+---
+
+## Alternative: Manual Installation (MCP Mode)
 
 If you prefer manual installation or need more control, you can install via the installer scripts:
 

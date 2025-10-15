@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarion Knowledge Base - RAG Search</title>
+    <link rel="stylesheet" href="/static/style.css?v=2.0">
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clarion Knowledge Base</h1>
+            <p class="subtitle">Semantic search across Clarion documentation using RAG (Retrieval Augmented Generation)</p>
+        </header>
+
+        <main>
+            <!-- LLM Provider Configuration Section -->
+            <div class="llm-config-section">
+                <h2>LLM Provider Configuration</h2>
+
+                <div class="config-row">
+                    <div class="config-group">
+                        <label for="providerSelect">Provider:</label>
+                        <select id="providerSelect">
+                            <option value="deepseek">Deepseek (Recommended - $0.14/1M tokens)</option>
+                            <option value="ollama">Ollama (Local - Free)</option>
+                        </select>
+                    </div>
+
+                    <div class="config-group">
+                        <label for="modelSelect">Model:</label>
+                        <select id="modelSelect">
+                            <option value="deepseek-chat">deepseek-chat</option>
+                            <option value="deepseek-coder">deepseek-coder</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="config-row" id="apiKeyRow">
+                    <div class="config-group full-width">
+                        <label for="apiKeyInput">API Key:</label>
+                        <div class="api-key-input-group">
+                            <input type="password" id="apiKeyInput" placeholder="sk-...">
+                            <button id="saveApiKeyButton">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-indicator not-configured" id="statusIndicator">
+                    <span class="status-text">Not configured</span>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-box">
+                    <textarea
+                        id="searchInput"
+                        placeholder="Ask a question about Clarion (e.g., 'How do I define a QUEUE?')"
+                        autocomplete="off"
+                        rows="3"
+                    ></textarea>
+                    <div class="button-group">
+                        <button id="askAIButton" class="primary-button">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Ask AI
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="docTypeFilter">Document Type:</label>
+                        <select id="docTypeFilter">
+                            <option value="">All Types</option>
+                            <option value="core_language">Core Language</option>
+                            <option value="libraries">Libraries</option>
+                            <option value="ide_development">IDE & Development</option>
+                            <option value="templates">Templates</option>
+                            <option value="specialized">Specialized</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="utilities">Utilities</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="maxResults">Max Results:</label>
+                        <select id="maxResults">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="minScore">Min Similarity:</label>
+                        <select id="minScore">
+                            <option value="0.2">0.2 (Very Loose)</option>
+                            <option value="0.3" selected>0.3 (Loose)</option>
+                            <option value="0.4">0.4 (Moderate)</option>
+                            <option value="0.5">0.5 (Strict)</option>
+                            <option value="0.6">0.6 (Very Strict)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="queryMode">Query Mode:</label>
+                        <select id="queryMode">
+                            <option value="augmented">Augmented (Docs + AI)</option>
+                            <option value="strict">Strict (Docs Only)</option>
+                            <option value="chat">Chat (AI Only - Fast)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mode-help">
+                    <small>
+                        <strong>Augmented:</strong> Best for code generation and examples<br>
+                        <strong>Strict:</strong> Documentation lookup only<br>
+                        <strong>Chat:</strong> Quick answers without doc search
+                    </small>
+                </div>
+            </div>
+
+            <div id="loadingIndicator" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Searching documentation...</p>
+            </div>
+
+            <div id="errorMessage" class="error" style="display: none;"></div>
+
+            <div id="results" class="results-container"></div>
+        </main>
+
+        <footer>
+            <p>Powered by the Clarion Knowledge Base MCP Server</p>
+            <p class="info-note">
+                Note: Code examples may have lost indentation during PDF conversion.
+                Please manually format Clarion code before use.
+            </p>
+            <p class="version">Version 1.5.1 - Updated LLM Models (GPT-5, Claude Sonnet 4.5, Gemini 2.5, Grok 4)</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
